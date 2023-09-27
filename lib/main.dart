@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/services/injection_container.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/services/router.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async{
-  WidgetsFlutterBinding.ensureInitialized(); 
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized(); 
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await init();
-  runApp(const MyApp());
+  FlutterNativeSplash.remove();  
+  runApp(const MyApp()); 
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  const MyApp({super.key}); 
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       title: 'Flutter FoodNinja',
       theme: ThemeData(

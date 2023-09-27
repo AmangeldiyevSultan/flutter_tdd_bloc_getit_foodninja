@@ -23,8 +23,8 @@ class OnBoardingRepoImpl implements OnBoardingRepo {
   @override
   ResultFuture<bool> checkIfUserIsFirstTimer() async {
     try {
-      await _localDataSource.checkIfUserIsFirstTimer();
-      return const Right(false);
+      final result = await _localDataSource.checkIfUserIsFirstTimer();
+      return Right(result);
     } on CacheException catch (e) {
       return Left(CacheFailure(message: e.message, statusCode: e.statusCode));
     }

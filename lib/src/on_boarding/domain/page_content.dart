@@ -16,15 +16,15 @@ class PageContent extends Equatable {
   const PageContent.first() : this(
     image: MediaRes.illustrationOnboarding_1,
     title: 'Find your Comfort\nFood here',
-    description: 'Here You Can find a chef or dish for every '
+    description: 'Here You Can find a chef or dish for every\n'
     'taste and color. Enjoy!',
   );
 
   const PageContent.second() : this(
     image: MediaRes.illustrationOnboarding_2,
-    title: 'Food Ninja is Where Your ' 
+    title: 'Food Ninja is Where Your\n' 
     'Comfort Food Lives',
-    description: 'Enjoy a fast and good food delivery at '
+    description: 'Enjoy a fast and good food delivery at\n'
     'your doorstep', 
   );
 
