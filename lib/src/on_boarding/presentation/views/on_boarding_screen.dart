@@ -16,7 +16,7 @@ class OnBoardingScreen extends StatefulWidget {
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
-
+  
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final pageController = PageController();
 
