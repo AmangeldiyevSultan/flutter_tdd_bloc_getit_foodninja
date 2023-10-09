@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "309484350168",
+    "project_id": "food-ninja-2d2b7",
+    "storage_bucket": "food-ninja-2d2b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309484350168:android:6ffb6b987299616d7d85ad",
+        "android_client_info": {
+          "package_name": "com.example.flutter_foodninja_bloc_tdd_clean_arc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8PmSRpo3bsDBueHP7KfGa384Okir19NM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
