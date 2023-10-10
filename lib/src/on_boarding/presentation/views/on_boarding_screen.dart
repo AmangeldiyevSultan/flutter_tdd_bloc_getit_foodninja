@@ -30,10 +30,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       backgroundColor: Colors.white,
       body: BlocConsumer<OnBoardingCubit, OnBoardingState>(
         listener: (context, state) {
-          if (state is OnBoardingStatus && state.isFirstTimer == false) {
+          if (state is OnBoardingStatus && !state.isFirstTimer) {
             Navigator.pushReplacementNamed(context, '/home');
           } else if (state is UserCached) {
-            // TODO(User-Cached-Handler): Push to the appropriate screen
+            Navigator.pushReplacementNamed(context, '/');
           }
         },
         builder: (context, state) {

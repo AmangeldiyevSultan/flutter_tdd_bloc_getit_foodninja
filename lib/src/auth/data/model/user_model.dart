@@ -5,10 +5,10 @@ class LocalUserModel extends LocalUser {
   const LocalUserModel({
     required super.uid,
     required super.email,
-    required super.profilePic,
-    required super.firstName,
-    required super.lastName,
-    required super.phoneNumber,
+    super.profilePic,
+    super.firstName,
+    super.lastName,
+    super.phoneNumber,
   });
 
   const LocalUserModel.empty()
