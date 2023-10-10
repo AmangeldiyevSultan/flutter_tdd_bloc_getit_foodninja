@@ -8,14 +8,14 @@ import 'auth_repo.mock.dart';
 
 void main() {
   late MockAuthRepo repo;
-  late UpdatePassword usecase;
+  late UpdateUser usecase;
 
   const tUserData = 'Test userData';
   const tUserAction = UpdateUserAction.firstName;
 
   setUp(() {
     repo = MockAuthRepo();
-    usecase = UpdatePassword(repo);
+    usecase = UpdateUser(repo);
   });
 
   test('should call the [AuthRepo]', () async {

@@ -1,3 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/repos/auth_repo_impl.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/repo/auth_repo.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/bloc/auth_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/datasource/on_boarding_local_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/repos/on_boarding_repo_impl.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/repos/on_boarding_repo.dart';
@@ -7,26 +18,4 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentatio
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final sl = GetIt.instance;
-
-Future<void> init() async {
-  final prefs = await SharedPreferences.getInstance();
-  //Feature --> onBoarding
-  //Business Logic
-  sl
-    ..registerFactory(
-      () => OnBoardingCubit(
-        cacheFirstTimer: sl(),
-        checkIfUserIsFirstTimer: sl(),
-      ),
-    )
-    ..registerLazySingleton(() => CacheFirstTimer(sl()))
-    ..registerLazySingleton(() => CheckIfUserIsFirstTimer(sl()))
-    ..registerLazySingleton<OnBoardingRepo>(() => OnBoardingRepoImpl(sl()))
-    ..registerLazySingleton<OnBoardingLocalDataSource>(
-      () => OnBoardingLocalDataSrcImpl(
-        sl(),
-      ),
-    )
-    ..registerLazySingleton(() => prefs);
-}
+part 'injection_container.main.dart';

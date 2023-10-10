@@ -4,8 +4,8 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/usecases/usecases.dart
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/repo/auth_repo.dart';
 
-class UpdatePassword extends UsecaseWithParams<void, UpdateUserParams> {
-  const UpdatePassword(
+class UpdateUser extends UsecaseWithParams<void, UpdateUserParams> {
+  const UpdateUser(
     this._repo,
   );
 
