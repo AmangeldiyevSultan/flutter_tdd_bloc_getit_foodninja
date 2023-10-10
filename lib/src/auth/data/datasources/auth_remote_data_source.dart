@@ -34,14 +34,14 @@ abstract class AuthRemoteDataSource {
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   const AuthRemoteDataSourceImpl({
     required FirebaseAuth authClient,
-    required FirebaseFirestore cloudStoreFirestore,
+    required FirebaseFirestore cloudStoreClient,
     required FirebaseStorage dbClient,
   })  : _authClient = authClient,
-        _cloudStoreFirestore = cloudStoreFirestore,
+        _cloudStoreClient = cloudStoreClient,
         _dbClient = dbClient;
 
   final FirebaseAuth _authClient;
-  final FirebaseFirestore _cloudStoreFirestore;
+  final FirebaseFirestore _cloudStoreClient;
   final FirebaseStorage _dbClient;
 
   @override
@@ -114,7 +114,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final userCred = await _authClient.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      ); 
+
 
       await _setUserData(userCred.user!, email);
     } on FirebaseAuthException catch (e) {
@@ -185,11 +186,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   Future<DocumentSnapshot<DataMap>> _getUserData(String uid) async {
-    return _cloudStoreFirestore.collection('users').doc(uid).get();
+    return _cloudStoreClient.collection('users').doc(uid).get();
   }
 
   Future<void> _setUserData(User user, String fallbackEmail) async {
-    await _cloudStoreFirestore.collection('users').doc(user.uid).set(
+    await _cloudStoreClient.collection('users').doc(user.uid).set(
           LocalUserModel(
             uid: user.uid,
             email: user.email ?? fallbackEmail,
@@ -202,7 +203,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   Future<void> _updateUserData(DataMap data) async {
-    await _cloudStoreFirestore
+    await _cloudStoreClient
         .collection('users')
         .doc(
           _authClient.currentUser?.uid,
