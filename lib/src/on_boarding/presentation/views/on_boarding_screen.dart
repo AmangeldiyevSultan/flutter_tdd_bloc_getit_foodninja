@@ -14,7 +14,7 @@ class OnBoardingScreen extends StatefulWidget {
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
-  
+
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final pageController = PageController();
 
@@ -30,6 +30,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       backgroundColor: Colors.white,
       body: BlocConsumer<OnBoardingCubit, OnBoardingState>(
         listener: (context, state) {
+           
           if (state is OnBoardingStatus && !state.isFirstTimer) {
             Navigator.pushReplacementNamed(context, '/home');
           } else if (state is UserCached) {
@@ -52,9 +53,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               ),
               PageView(
                 controller: pageController,
-                children: const [
-                  OnBoardingBody(pageContent: PageContent.first()),
-                  OnBoardingBody(pageContent: PageContent.second()),
+                children: [
+                  OnBoardingBody(
+                    pageContent: const PageContent.first(),
+                    pageController: pageController,
+                  ),
+                  OnBoardingBody(
+                    pageContent: const PageContent.second(),
+                    pageController: pageController,
+                  ),
                 ],
               ),
             ],

@@ -32,7 +32,6 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   swipe_to: ^1.0.2
 
-
 dev_dependencies:
   bloc_test: ^9.1.4
   fake_cloud_firestore: ^2.4.1+1
@@ -66,7 +65,7 @@ flutter:
         - asset: assets/fonts/Poppins/Poppins-Light.ttf
           weight: 300
         - asset: assets/fonts/Poppins/Poppins-LightItalic.ttf
-          style: italic 
+          style: italic
           weight: 300
         - asset: assets/fonts/Poppins/Poppins-Regular.ttf
           weight: 400
@@ -80,4 +79,18 @@ flutter:
         - asset: assets/fonts/BentonSans/BentonSans-Regular.otf
           weight: 400
         - asset: assets/fonts/BentonSans/BentonSans-Thin.otf
-          weight: 200 
+          weight: 200
+    - family: Viga
+      fonts:
+        - asset: assets/fonts/Viga/Viga-Regular.ttf
+          weight: 400
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter-SemiBold.ttf
+          weight: 600
+
+flutter_native_splash:
+  image: assets/images/logo-splash.png
+  background_image: assets/images/background.png
+  android: true
+  ios: true

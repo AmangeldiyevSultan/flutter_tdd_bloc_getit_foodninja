@@ -7,17 +7,20 @@ class PageContent extends Equatable {
     required this.image,
     required this.title,
     required this.description,
+    required this.buttonState,
   });
 
   final String image;
   final String title;
   final String description;
+  final String buttonState;
 
   const PageContent.first() : this(
     image: MediaRes.illustrationOnboarding_1,
     title: 'Find your Comfort\nFood here',
     description: 'Here You Can find a chef or dish for every\n'
     'taste and color. Enjoy!',
+    buttonState: 'Next',
   );
 
   const PageContent.second() : this(
@@ -26,8 +29,8 @@ class PageContent extends Equatable {
     'Comfort Food Lives',
     description: 'Enjoy a fast and good food delivery at\n'
     'your doorstep', 
+    buttonState: 'Get Started',
   );
-
   @override
   List<Object?> get props => [image, title, description];
 }

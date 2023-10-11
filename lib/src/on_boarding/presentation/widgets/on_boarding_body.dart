@@ -3,11 +3,18 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/custom_
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/page_content.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/cubit/cubit/on_boarding_cubit.dart';
+import 'package:provider/provider.dart';
 
 class OnBoardingBody extends StatelessWidget {
-  const OnBoardingBody({required this.pageContent, super.key});
+  const OnBoardingBody({
+    required this.pageContent,
+    required this.pageController,
+    super.key,
+  });
 
   final PageContent pageContent;
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +55,17 @@ class OnBoardingBody extends StatelessWidget {
         SizedBox(
           height: context.height * .05,
         ),
-        CustomButton(text: 'Next', onPressed:() {}), 
+        CustomButton(
+          text: pageContent.buttonState,
+          onPressed: () {
+            pageContent.buttonState == 'Next'
+                ? pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeIn,
+                  )
+                : context.read<OnBoardingCubit>().cacheFirstTimer();
+          },
+        ),
       ],
     );
   }

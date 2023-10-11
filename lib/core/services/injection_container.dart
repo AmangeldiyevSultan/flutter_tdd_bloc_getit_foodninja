@@ -8,7 +8,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/f
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/bloc/auth_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/datasource/on_boarding_local_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/repos/on_boarding_repo_impl.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/repos/on_boarding_repo.dart';
