@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/app/providers/user_provider.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/services/injection_container.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/services/router.dart';

@@ -78,13 +78,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SignInScreen.routeName,
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'already have an account?',
                     style: TextStyle(
                       decoration: TextDecoration.underline,
                       decorationColor: Colours.underLineColor,
                       fontSize: 12,
-                      foreground: Paint()..shader = Colours.linearGradient,
+                      color: Colours.underLineColor,
                       fontFamily: Fonts.viga,
                     ),
                   ),

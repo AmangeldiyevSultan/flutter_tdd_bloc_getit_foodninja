@@ -110,7 +110,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   SizedBox _textButton(String text, VoidCallback onPressed) {
     return SizedBox(
-      height: 30,
+      height: 40,
       child: TextButton(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
@@ -118,11 +118,11 @@ class _SignInScreenState extends State<SignInScreen> {
         onPressed: onPressed,
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             decoration: TextDecoration.underline,
             decorationColor: Colours.underLineColor,
-            fontSize: 12,
-            foreground: Paint()..shader = Colours.linearGradient,
+            fontSize: 15,
+            color: Colours.underLineColor,
             fontFamily: Fonts.viga,
           ),
         ),
