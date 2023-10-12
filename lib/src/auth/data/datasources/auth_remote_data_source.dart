@@ -114,8 +114,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final userCred = await _authClient.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      ); 
-
+      );
 
       await _setUserData(userCred.user!, email);
     } on FirebaseAuthException catch (e) {

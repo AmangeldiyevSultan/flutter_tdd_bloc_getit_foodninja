@@ -3,14 +3,15 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_exte
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton(
-      {required this.text,
-      required this.onPressed,
-      this.width,
-      this.height,
-      super.key, });
+  const CustomButton({
+    required this.child,
+    required this.onPressed,
+    this.width,
+    this.height,
+    super.key,
+  });
 
-  final String text;
+  final Widget child;
   final VoidCallback onPressed;
   final double? width;
   final double? height;
@@ -18,6 +19,8 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         gradient: Colours.gradientButton,
@@ -31,12 +34,12 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           padding: EdgeInsets.symmetric(
-            horizontal: width ?? context.width * 0.21,
-            vertical: height ?? context.height * 0.02,
+            horizontal: context.width * 0.21,
+            vertical: context.height * 0.02,
           ),
           foregroundColor: Colors.white,
         ),
-        child: Text(text),
+        child: child,
       ),
     );
   }

@@ -15,6 +15,7 @@ class Colours {
   ).createShader(const Rect.fromLTWH(0, 0, 200, 70));
 
   static const underLineColor = Color(0xff53E88B);
+  static const snackBarColours = Color(0xff15BE77);
   static const hintColour = Color(0xff3B3B3B);
   static const textFieldBorderColour = Color(0xffF4F4F4);
   static const shadowColour = Color(0xffF4F4F4);

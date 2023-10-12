@@ -56,7 +56,7 @@ class OnBoardingBody extends StatelessWidget {
           height: context.height * .05,
         ),
         CustomButton(
-          text: pageContent.buttonState,
+          child: Text(pageContent.buttonState),
           onPressed: () {
             pageContent.buttonState == 'Next'
                 ? pageController.nextPage(
