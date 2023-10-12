@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/failures.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/use_cases/cache_first_timer.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/use_cases/check_if_user_first_timer.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/cubit/cubit/on_boarding_cubit.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -76,18 +76,18 @@ void main() {
 
   group('checkIfUserIsFirstTimer', () {
     blocTest<OnBoardingCubit, OnBoardingState>(
-        'should emit [ChecingIfUserIsFirstTimer, OnBoardingStatus] '
-        'when successful',
-        build: () {
+      'should emit [ChecingIfUserIsFirstTimer, OnBoardingStatus] '
+      'when successful',
+      build: () {
         when(() => checkIfUserIsFirstTimer())
             .thenAnswer((_) async => const Right(false));
         return onBoardingCubit;
       },
       act: (cubit) => cubit.checkIfUserIsFirstTimer(),
-      expect: () => const [ 
-        CheckingIfUserIsFirstTimer(), 
-        OnBoardingStatus(isFirstTimer: false),  
-      ], 
+      expect: () => const [
+        CheckingIfUserIsFirstTimer(),
+        OnBoardingStatus(isFirstTimer: false),
+      ],
       verify: (_) {
         verify(() => checkIfUserIsFirstTimer()).called(1);
         verifyNoMoreInteractions(checkIfUserIsFirstTimer);
@@ -108,7 +108,7 @@ void main() {
       act: (cubit) => cubit.checkIfUserIsFirstTimer(),
       expect: () => [
         const CheckingIfUserIsFirstTimer(),
-        const OnBoardingStatus(isFirstTimer: true), 
+        const OnBoardingStatus(isFirstTimer: true),
       ],
       verify: (_) {
         verify(() => checkIfUserIsFirstTimer()).called(1);

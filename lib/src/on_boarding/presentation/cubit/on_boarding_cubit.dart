@@ -27,11 +27,11 @@ class OnBoardingCubit extends Cubit<OnBoardingState> {
   }
 
   Future<void> checkIfUserIsFirstTimer() async {
-    emit(const CheckingIfUserIsFirstTimer()); 
+    emit(const CheckingIfUserIsFirstTimer());
     final result = await _checkIfUserIsFirstTimer();
     result.fold(
       (failure) => emit(const OnBoardingStatus(isFirstTimer: true)),
-      (status) => emit( OnBoardingStatus(isFirstTimer: status)), 
+      (status) => emit(OnBoardingStatus(isFirstTimer: status)),
     );
   }
 }
