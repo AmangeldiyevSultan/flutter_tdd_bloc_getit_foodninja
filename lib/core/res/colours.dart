@@ -19,4 +19,7 @@ class Colours {
   static const hintColour = Color(0xff3B3B3B);
   static const textFieldBorderColour = Color(0xffF4F4F4);
   static const shadowColour = Color(0xffF4F4F4);
+  static const arrowBackColour = Color(0xffDA6317);
+  static const lightAmberColour = Color(0xffF9A84D);
+  static const labelColour = Color(0xff828282);
 }

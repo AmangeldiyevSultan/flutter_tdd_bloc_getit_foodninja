@@ -8,12 +8,13 @@ class MediaRes {
 
   static const background = '$_baseImages/background.png';
   static const backgroundPdf = '$_baseImages/background-pdf.png';
+  static const backgroundPdf2 = '$_baseImages/background2-pdf.png';
   static const logo = '$_baseImages/logo-img.png';
 
   static const illustrationOnboarding_1 =
-      '$_baseVectors/illustration_boarding_1.png';
+      '$_baseVectors/vector-illustration-boarding-1.png';
   static const illustrationOnboarding_2 =
-      '$_baseVectors/illustration_boarding_2.png';
+      '$_baseVectors/vector-illustration-boarding-2.png';
 
   static const underContruction = '$_baseLotties/under_construction.json';
 
@@ -22,4 +23,5 @@ class MediaRes {
   static const iconShow = '$_baseIcons/icon-show.png';
   static const iconLock = '$_baseIcons/icon-lock.png';
   static const iconMessage = '$_baseIcons/icon-message.png';
+  static const vectorMessage = '$_baseVectors/vector-message.png';
 }

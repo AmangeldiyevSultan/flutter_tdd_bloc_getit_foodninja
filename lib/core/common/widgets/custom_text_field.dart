@@ -12,6 +12,8 @@ class CustomTextField extends StatefulWidget {
     this.textInputType,
     this.validator,
     this.overrideValidator = false,
+    this.label,
+    this.floatingLabelStyle,
     super.key,
   });
 
@@ -22,6 +24,8 @@ class CustomTextField extends StatefulWidget {
   final TextInputType? textInputType;
   final String? Function(String?)? validator;
   final bool overrideValidator;
+  final Widget? label;
+  final TextStyle? floatingLabelStyle;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -70,6 +74,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         controller: widget.controller,
         decoration: InputDecoration(
+          floatingLabelStyle: widget.floatingLabelStyle,
+          label: widget.label,
           prefixIcon: widget.iconPrefixSource != null
               ? Image.asset(widget.iconPrefixSource!)
               : null,

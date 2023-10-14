@@ -12,6 +12,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/forgot_password_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_in_form.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_logo.dart';
@@ -102,7 +103,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    _textButton('Forgot Your Password?', () {}),
+                    _textButton('Forgot Your Password?', () {
+                      Navigator.pushNamed(
+                        context,
+                        ForgotPasswordScreen.routeName,
+                      );
+                    }),
                     _textButton('Create Account', () {
                       Navigator.pushReplacementNamed(
                         context,
