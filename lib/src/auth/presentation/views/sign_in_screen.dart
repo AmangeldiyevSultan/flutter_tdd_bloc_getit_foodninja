@@ -12,6 +12,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/bio_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/forgot_password_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_in_form.dart';
@@ -48,7 +49,19 @@ class _SignInScreenState extends State<SignInScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is SignedIn) {
           context.read<UserProvider>().initUser(state.user as LocalUserModel);
-          Navigator.pushReplacementNamed(context, DashBoard.routeName);
+
+          context.userProvider.user!.initialized ??
+              Navigator.pushReplacementNamed(context, BioScreen.routeName);
+          context.userProvider.user!.initialized!
+              ? Navigator.pushReplacementNamed(context, DashBoard.routeName)
+              : Navigator.pushReplacementNamed(context, BioScreen.routeName);
+        } else if (state is GoogleSignedIn) {
+          context.read<UserProvider>().initUser(state.user as LocalUserModel);
+          context.userProvider.user!.initialized ??
+              Navigator.pushReplacementNamed(context, BioScreen.routeName);
+          context.userProvider.user!.initialized!
+              ? Navigator.pushReplacementNamed(context, DashBoard.routeName)
+              : Navigator.pushReplacementNamed(context, BioScreen.routeName);
         }
       },
       builder: (context, state) {
@@ -96,7 +109,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         CtmSclMediaButton(
                           image: MediaRes.iconGoogle,
                           text: 'Google',
-                          callback: () {},
+                          callback: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            FirebaseAuth.instance.currentUser?.reload();
+                            context.read<AuthBloc>().add(
+                                  const GoogleSignInEvent(),
+                                );
+                          },
                         ),
                       ],
                     ),

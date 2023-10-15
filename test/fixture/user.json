@@ -4,5 +4,6 @@
     "profilePic": "",
     "firstName": "",
     "lastName": "",
-    "phoneNumber": ""
+    "phoneNumber": "",
+    "initialized": false
 }

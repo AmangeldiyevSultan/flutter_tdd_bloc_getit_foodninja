@@ -11,6 +11,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/bio_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_logo.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_up_form.dart';
@@ -55,7 +56,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               );
         } else if (state is SignedIn) {
           context.read<UserProvider>().initUser(state.user as LocalUserModel);
-          Navigator.pushReplacementNamed(context, DashBoard.routeName);
+          context.userProvider.user!.initialized ??
+              Navigator.pushReplacementNamed(context, BioScreen.routeName);
+          context.userProvider.user!.initialized!
+              ? Navigator.pushReplacementNamed(context, DashBoard.routeName)
+              : Navigator.pushReplacementNamed(context, BioScreen.routeName);
         }
       },
       builder: (context, state) {

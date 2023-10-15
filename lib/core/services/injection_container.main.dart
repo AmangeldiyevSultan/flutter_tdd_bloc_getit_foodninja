@@ -37,23 +37,27 @@ Future<void> _initAuth() async {
         signUp: sl(),
         forgotPassword: sl(),
         updateUser: sl(),
+        googleSignInMethod: sl(),
       ),
     )
     ..registerLazySingleton(() => SignIn(sl()))
     ..registerLazySingleton(() => SignUp(sl()))
     ..registerLazySingleton(() => ForgotPassword(sl()))
     ..registerLazySingleton(() => UpdateUser(sl()))
+    ..registerLazySingleton(() => GoogleSignInMethod(sl()))
     ..registerLazySingleton<AuthRepo>(() => AuthRepoImpl(sl()))
     ..registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
         authClient: sl(),
         cloudStoreClient: sl(),
         dbClient: sl(),
+        googleAuthClient: sl(),
       ),
     )
     ..registerLazySingleton(() => FirebaseAuth.instance)
     ..registerLazySingleton(
       () => FirebaseFirestore.instance,
     )
-    ..registerLazySingleton(() => FirebaseStorage.instance);
+    ..registerLazySingleton(() => FirebaseStorage.instance)
+    ..registerLazySingleton(GoogleSignIn.new);
 }

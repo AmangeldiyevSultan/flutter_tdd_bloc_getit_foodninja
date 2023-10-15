@@ -5,3 +5,11 @@ extension EmailValidator on String {
     ).hasMatch(this);
   }
 }
+
+extension EmailAuth on String {
+  String addEmailSuffix(String email) {
+    final atIndex = email.indexOf('@');
+    return '${email.substring(0, atIndex)}'
+        '_emailauth${email.substring(atIndex)}';
+  }
+}

@@ -5,21 +5,22 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/entities/us
 abstract class AuthRepo {
   const AuthRepo();
 
-ResultFuture<LocalUser> signIn({
-  required String email,
-  required String password,
-});
+  ResultFuture<LocalUser> signIn({
+    required String email,
+    required String password,
+  });
 
-ResultFuture<void> signUp({
-  required String email,
-  required String password,
-});
+  ResultFuture<void> signUp({
+    required String email,
+    required String password,
+  });
 
-ResultFuture<void> forgotPassword(String email);
+  ResultFuture<void> forgotPassword(String email);
 
-ResultFuture<void> updateUser({
-  required dynamic userData,
-  required UpdateUserAction userAction,
-});
+  ResultFuture<void> updateUser({
+    required dynamic userData,
+    required UpdateUserAction userAction,
+  });
 
+  ResultFuture<LocalUser> googleSignIn();
 }

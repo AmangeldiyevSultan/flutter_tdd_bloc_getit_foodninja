@@ -17,6 +17,13 @@ class SignInEvent extends AuthEvent {
   List<String> get props => [email, password];
 }
 
+class GoogleSignInEvent extends AuthEvent {
+  const GoogleSignInEvent();
+
+  @override
+  List<String> get props => [];
+}
+
 class SignUpEvent extends AuthEvent {
   const SignUpEvent({
     required this.email,
@@ -40,7 +47,7 @@ class ForgotPasswordEvent extends AuthEvent {
 }
 
 class UpdateUserEvent extends AuthEvent {
-  UpdateUserEvent( {
+  UpdateUserEvent({
     required this.userAction,
     required this.userData,
   }) : assert(

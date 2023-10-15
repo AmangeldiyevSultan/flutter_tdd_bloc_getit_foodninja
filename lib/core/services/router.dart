@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/views/loading_view.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/views/page_under_construction.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/services/injection_container.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/bio_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/forgot_password_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_screen.dart';
@@ -29,12 +33,45 @@ Route<dynamic> generateRoute(RouteSettings settings) {
             );
           } else if (sl<FirebaseAuth>().currentUser != null) {
             final user = sl<FirebaseAuth>().currentUser!;
-            final localUser = LocalUserModel(
-              uid: user.uid,
-              email: user.email ?? '',
+
+            return FutureBuilder(
+              future: sl<FirebaseFirestore>()
+                  .collection('users')
+                  .doc(user.uid)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (!snapshot.hasData || !snapshot.data!.exists) {
+                    return const SignInScreen(); // or some other fallback
+                  }
+                  final localUser =
+                      LocalUserModel.fromMap(snapshot.data!.data()!);
+                  context.userProvider.initUser(localUser);
+                  if (context.userProvider.user!.initialized!) {
+                    return const DashBoard();
+                  } else {
+                    return const BioScreen();
+                  }
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Scaffold(
+                    body: SafeArea(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            alignment: Alignment.topCenter,
+                            image: AssetImage(MediaRes.backgroundPdf2),
+                          ),
+                        ),
+                        child: const LoadingView(),
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SignInScreen();
+                }
+              },
             );
-            context.userProvider.initUser(localUser);
-            return const DashBoard();
           }
           return BlocProvider(
             create: (_) => sl<AuthBloc>(),
@@ -65,6 +102,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         (_) => BlocProvider(
           create: (_) => sl<AuthBloc>(),
           child: const ForgotPasswordScreen(),
+        ),
+        settings: settings,
+      );
+
+    case BioScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<AuthBloc>(),
+          child: const BioScreen(),
         ),
         settings: settings,
       );

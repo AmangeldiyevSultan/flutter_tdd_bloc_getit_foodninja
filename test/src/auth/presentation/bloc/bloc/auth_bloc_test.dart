@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/failures.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/google_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';
@@ -18,11 +19,14 @@ class MockForgotPassword extends Mock implements ForgotPassword {}
 
 class MockUpdateUser extends Mock implements UpdateUser {}
 
+class MockGoogleSignIn extends Mock implements GoogleSignInMethod {}
+
 void main() {
   late SignIn signIn;
   late SignUp signUp;
   late ForgotPassword forgotPassword;
   late UpdateUser updateUser;
+  late GoogleSignInMethod googleSignInMethod;
   late AuthBloc authBloc;
 
   const tSignUpParams = SignUpParams.empty();
@@ -34,11 +38,13 @@ void main() {
     signUp = MockSignUp();
     forgotPassword = MockForgotPassword();
     updateUser = MockUpdateUser();
+    googleSignInMethod = MockGoogleSignIn();
     authBloc = AuthBloc(
       signIn: signIn,
       signUp: signUp,
       forgotPassword: forgotPassword,
       updateUser: updateUser,
+      googleSignInMethod: googleSignInMethod,
     );
   });
 
@@ -59,6 +65,52 @@ void main() {
     statusCode: 'There is no user record corresponding  to this identifier.'
         ' The user may have been deleted',
   );
+
+  group('GoogleSignInEvent', () {
+    const tUser = LocalUserModel.empty();
+    blocTest<AuthBloc, AuthState>(
+      'should emit [AuthLoading, SignedIn] when [GoogleSignInEvent is added]',
+      build: () {
+        when(
+          () => googleSignInMethod(),
+        ).thenAnswer(
+          (_) async => const Right(tUser),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        const GoogleSignInEvent(),
+      ),
+      expect: () => [
+        const AuthLoading(),
+        const GoogleSignedIn(tUser),
+      ],
+      verify: (_) {
+        verify(() => googleSignInMethod()).called(1);
+        verifyNoMoreInteractions(googleSignInMethod);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'should emit [AuthLoading, AuthError] when signIn fails',
+      build: () {
+        when(() => googleSignInMethod())
+            .thenAnswer((_) async => Left(tServerFailure));
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        const GoogleSignInEvent(),
+      ),
+      expect: () => [
+        const AuthLoading(),
+        AuthError(tServerFailure.message),
+      ],
+      verify: (_) {
+        verify(() => googleSignInMethod()).called(1);
+        verifyNoMoreInteractions(googleSignInMethod);
+      },
+    );
+  });
   group('SignInEvent', () {
     const tUser = LocalUserModel.empty();
     blocTest<AuthBloc, AuthState>(
@@ -101,7 +153,7 @@ void main() {
       ),
       expect: () => [
         const AuthLoading(),
-        AuthError(tServerFailure.errorMessage),
+        AuthError(tServerFailure.message),
       ],
       verify: (_) {
         verify(() => signIn(tSignInParams)).called(1);

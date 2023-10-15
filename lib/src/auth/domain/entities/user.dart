@@ -8,17 +8,19 @@ class LocalUser extends Equatable {
     this.firstName,
     this.lastName,
     this.phoneNumber,
+    this.initialized,
   });
 
-  const LocalUser.empty() 
-  : this(
-    uid: '',
-    email: '',
-    profilePic: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-  ); 
+  const LocalUser.empty()
+      : this(
+          uid: '',
+          email: '',
+          profilePic: '',
+          firstName: '',
+          lastName: '',
+          phoneNumber: '',
+          initialized: false,
+        );
 
   final String uid;
   final String email;
@@ -26,6 +28,7 @@ class LocalUser extends Equatable {
   final String? firstName;
   final String? lastName;
   final String? phoneNumber;
+  final bool? initialized;
 
   @override
   List<Object?> get props => [uid];

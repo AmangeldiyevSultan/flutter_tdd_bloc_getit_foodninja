@@ -7,13 +7,17 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/enum/update_user_action.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/exceptions.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/typdef_extenstion.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRemoteDataSource {
   const AuthRemoteDataSource();
 
   Future<void> forgotPassword(String email);
+
+  Future<LocalUserModel> googleSignIn();
 
   Future<LocalUserModel> signIn({
     required String email,
@@ -36,20 +40,83 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required FirebaseAuth authClient,
     required FirebaseFirestore cloudStoreClient,
     required FirebaseStorage dbClient,
+    required GoogleSignIn googleAuthClient,
   })  : _authClient = authClient,
         _cloudStoreClient = cloudStoreClient,
-        _dbClient = dbClient;
+        _dbClient = dbClient,
+        _googleAuthClient = googleAuthClient;
 
   final FirebaseAuth _authClient;
   final FirebaseFirestore _cloudStoreClient;
   final FirebaseStorage _dbClient;
+  final GoogleSignIn _googleAuthClient;
+
+  @override
+  Future<LocalUserModel> googleSignIn() async {
+    try {
+      final googleUser = await _googleAuthClient.signIn();
+      if (googleUser == null) {
+        throw const ServerException(
+          message: 'Please try again later',
+          statusCode: 'Unknown Error',
+        );
+      }
+
+      final googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final result =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      final user = result.user;
+
+      if (result.additionalUserInfo!.isNewUser == false) {
+        final currentUser = FirebaseAuth.instance.currentUser;
+        await currentUser!.linkWithCredential(credential);
+      }
+
+      if (user == null) {
+        throw const ServerException(
+          message: 'Please try again later',
+          statusCode: 'Unknown Error',
+        );
+      }
+      var userData = await _getUserData(user.uid);
+
+      if (userData.exists) {
+        return LocalUserModel.fromMap(userData.data()!);
+      }
+
+      await _setUserData(user, user.email!);
+
+      userData = await _getUserData(user.uid);
+
+      return LocalUserModel.fromMap(userData.data()!);
+    } on FirebaseAuthException catch (e) {
+      throw ServerException(
+        message: e.message ?? 'Error Occured',
+        statusCode: e.code,
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
 
   @override
   Future<void> forgotPassword(
     String email,
   ) async {
     try {
-      await _authClient.sendPasswordResetEmail(email: email);
+      final modifiedEmail = email.addEmailSuffix(email);
+
+      await _authClient.sendPasswordResetEmail(email: modifiedEmail);
     } on FirebaseException catch (e) {
       throw ServerException(
         message: e.message ?? 'Error Occured!',
@@ -67,8 +134,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
+      final modifiedEmail = email.addEmailSuffix(email);
+
       final result = await _authClient.signInWithEmailAndPassword(
-        email: email,
+        email: modifiedEmail,
         password: password,
       );
 
@@ -111,8 +180,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
+      final modifiedEmail = email.addEmailSuffix(email);
+
       final userCred = await _authClient.createUserWithEmailAndPassword(
-        email: email,
+        email: modifiedEmail,
         password: password,
       );
 
@@ -197,6 +268,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             firstName: '',
             lastName: '',
             phoneNumber: '',
+            initialized: false,
           ).toMap(),
         );
   }

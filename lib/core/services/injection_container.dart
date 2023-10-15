@@ -5,6 +5,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/datasources/a
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/repos/auth_repo_impl.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/repo/auth_repo.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/google_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/use_
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/use_cases/check_if_user_first_timer.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'injection_container.main.dart';

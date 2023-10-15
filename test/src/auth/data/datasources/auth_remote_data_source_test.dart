@@ -11,6 +11,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
@@ -45,6 +46,7 @@ void main() {
   late FirebaseFirestore cloudStoreClient;
   late FirebaseAuth authClient;
   late MockFirebaseStorage dbClient;
+  late MockGoogleSignIn googleSignIn;
 
   late AuthRemoteDataSource dataSource;
 
@@ -58,6 +60,7 @@ void main() {
     cloudStoreClient = FakeFirebaseFirestore();
     authClient = MockFirebaseAuth();
     dbClient = MockFirebaseStorage();
+    googleSignIn = MockGoogleSignIn();
 
     documentReference = cloudStoreClient.collection('users').doc();
     await documentReference.set(
@@ -71,8 +74,8 @@ void main() {
       authClient: authClient,
       cloudStoreClient: cloudStoreClient,
       dbClient: dbClient,
+      googleAuthClient: googleSignIn,
     );
-
     when(() => authClient.currentUser).thenReturn(mockUser);
   });
 
@@ -117,6 +120,107 @@ void main() {
         () => authClient.sendPasswordResetEmail(email: tEmail),
       ).called(1);
       verifyNoMoreInteractions(authClient);
+    });
+  });
+
+  group('GoogleSignInUser', () async {
+    test('should return idToken and accessToken when authenticating', () async {
+      final signInAccount = await googleSignIn.signIn();
+      final signInAuthentication = await signInAccount!.authentication;
+      expect(signInAuthentication, isNotNull);
+      expect(googleSignIn.currentUser, isNotNull);
+      expect(signInAuthentication.accessToken, isNotNull);
+      expect(signInAuthentication.idToken, isNotNull);
+    });
+    test('should return null when google login is cancelled by the user',
+        () async {
+      googleSignIn.setIsCancelled(true);
+      final signInAccount = await googleSignIn.signIn();
+      expect(signInAccount, isNull);
+    });
+    test(
+        'testing google login twice, once cancelled,'
+        ' once not cancelled at the same test.', () async {
+      googleSignIn.setIsCancelled(true);
+      final signInAccount = await googleSignIn.signIn();
+      expect(signInAccount, isNull);
+      googleSignIn.setIsCancelled(false);
+      final signInAccountSecondAttempt = await googleSignIn.signIn();
+      expect(signInAccountSecondAttempt, isNotNull);
+    });
+
+    final signInAccount = await googleSignIn.signIn();
+    final googleAuth = await signInAccount!.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    test('should return [LocalUserModel] when no [Exception] is thrown',
+        () async {
+      when(() => googleSignIn.signIn()).thenAnswer((_) async => signInAccount);
+
+      when(
+        () => authClient.signInWithCredential(credential),
+      ).thenAnswer((_) async => userCredential);
+
+      final result = await dataSource.googleSignIn();
+
+      expect(result.uid, userCredential.user!.uid);
+      expect(result.lastName, '');
+      verify(
+        () => googleSignIn.signIn(),
+      ).called(1);
+      verify(
+        () => authClient.signInWithCredential(credential),
+      ).called(1);
+      verifyNoMoreInteractions(authClient);
+      verifyNoMoreInteractions(googleSignIn);
+    });
+
+    test(
+        'should throw [ServerException] when [FirebaseAuthException] is'
+        ' thrown', () {
+      when(() => googleSignIn.signIn()).thenAnswer((_) async => signInAccount);
+      when(
+        () => authClient.signInWithCredential(credential),
+      ).thenThrow(tFirebaseAuthException);
+
+      final result = dataSource.googleSignIn();
+
+      verify(
+        () => googleSignIn.signIn(),
+      ).called(1);
+      expect(result, equals(throwsA(isA<ServerException>())));
+      verify(() => authClient.signInWithCredential(credential)).called(1);
+      verifyNoMoreInteractions(authClient);
+      verifyNoMoreInteractions(googleSignIn);
+    });
+
+    test('should throw [ServerException] when user is null after sign in', () {
+      when(() => googleSignIn.signIn()).thenAnswer((_) async => signInAccount);
+
+      final emptyUserCredential = MockUserCredential();
+      when(() => authClient.signInWithCredential(credential))
+          .thenAnswer((_) async => emptyUserCredential);
+
+      final call = dataSource.googleSignIn;
+
+      expect(
+        call,
+        equals(
+          throwsA(
+            isA<ServerException>(),
+          ),
+        ),
+      );
+      verify(
+        () => googleSignIn.signIn(),
+      ).called(1);
+      verify(
+        () => authClient.signInWithCredential(credential),
+      ).called(1);
+      verifyNoMoreInteractions(authClient);
+      verifyNoMoreInteractions(googleSignIn);
     });
   });
 
@@ -381,10 +485,16 @@ void main() {
         userData: newProfilePic,
       );
 
-      verify(() => mockUser.updatePhotoURL(any()),).called(1);
+      verify(
+        () => mockUser.updatePhotoURL(any()),
+      ).called(1);
 
-      verifyNever(() => mockUser.updateEmail(any()),);
-      verifyNever(() => mockUser.updatePassword(any()),);
+      verifyNever(
+        () => mockUser.updateEmail(any()),
+      );
+      verifyNever(
+        () => mockUser.updatePassword(any()),
+      );
 
       expect(dbClient.storedFilesMap.isNotEmpty, equals(isTrue));
     });

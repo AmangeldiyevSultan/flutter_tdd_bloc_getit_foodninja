@@ -13,6 +13,16 @@ class AuthRepoImpl extends AuthRepo {
   final AuthRemoteDataSource _remoteDataSource;
 
   @override
+  ResultFuture<LocalUser> googleSignIn() async {
+    try {
+      final result = await _remoteDataSource.googleSignIn();
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+    }
+  }
+
+  @override
   ResultFuture<void> forgotPassword(String email) async {
     try {
       await _remoteDataSource.forgotPassword(email);

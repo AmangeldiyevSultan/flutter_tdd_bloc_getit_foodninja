@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/enum/update_user_action.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/entities/user.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/google_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';
@@ -18,10 +19,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required SignUp signUp,
     required ForgotPassword forgotPassword,
     required UpdateUser updateUser,
+    required GoogleSignInMethod googleSignInMethod,
   })  : _signIn = signIn,
         _signUp = signUp,
         _forgotPassword = forgotPassword,
         _updateUser = updateUser,
+        _googleSignInMethod = googleSignInMethod,
         super(const AuthInitial()) {
     on<AuthEvent>((event, emit) {
       emit(const AuthLoading());
@@ -30,12 +33,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpEvent>(_signUpHandler);
     on<ForgotPasswordEvent>(_forgotPasswordHandler);
     on<UpdateUserEvent>(_updateUserHandler);
+    on<GoogleSignInEvent>(_googleSignInHandler);
   }
 
   final SignIn _signIn;
   final SignUp _signUp;
   final ForgotPassword _forgotPassword;
   final UpdateUser _updateUser;
+  final GoogleSignInMethod _googleSignInMethod;
+
+  Future<void> _googleSignInHandler(
+    GoogleSignInEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    final result = await _googleSignInMethod();
+
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (user) => emit(GoogleSignedIn(user)),
+    );
+  }
 
   Future<void> _signInHandler(
     SignInEvent event,

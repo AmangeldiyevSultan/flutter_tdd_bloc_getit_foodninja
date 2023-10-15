@@ -9,6 +9,7 @@ class LocalUserModel extends LocalUser {
     super.firstName,
     super.lastName,
     super.phoneNumber,
+    super.initialized,
   });
 
   const LocalUserModel.empty()
@@ -19,6 +20,7 @@ class LocalUserModel extends LocalUser {
           firstName: '',
           lastName: '',
           phoneNumber: '',
+          initialized: false,
         );
 
   LocalUserModel.fromMap(DataMap map)
@@ -29,6 +31,7 @@ class LocalUserModel extends LocalUser {
           firstName: map['firstName'] as String,
           lastName: map['lastName'] as String,
           phoneNumber: map['phoneNumber'] as String,
+          initialized: map['initialized'] as bool,
           // integer: (map['integer'] as num).toInt(),
           // list: (map['list'] as List<dynamic>).cast<String>(),
         );
@@ -41,6 +44,7 @@ class LocalUserModel extends LocalUser {
       'firstName': firstName,
       'lastName': lastName,
       'phoneNumber': phoneNumber,
+      'initialized': initialized,
     };
   }
 
@@ -51,6 +55,7 @@ class LocalUserModel extends LocalUser {
     String? firstName,
     String? lastName,
     String? phoneNumber,
+    bool? initialized,
   }) {
     return LocalUserModel(
       uid: uid ?? this.uid,
@@ -59,6 +64,7 @@ class LocalUserModel extends LocalUser {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      initialized: initialized ?? this.initialized,
     );
   }
 }

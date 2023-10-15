@@ -11,7 +11,16 @@ final class AuthInitial extends AuthState {
 }
 
 class AuthLoading extends AuthState {
-  const  AuthLoading();
+  const AuthLoading();
+}
+
+class GoogleSignedIn extends AuthState {
+  const GoogleSignedIn(this.user);
+
+  final LocalUser user;
+
+  @override
+  List<Object> get props => [user];
 }
 
 class SignedIn extends AuthState {
