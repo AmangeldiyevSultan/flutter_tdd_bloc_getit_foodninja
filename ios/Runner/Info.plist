@@ -2,6 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>fb857707545867646</string>
+				</array>
+			</dict>
+		</array>
+		<key>FacebookAppID</key>
+		<string>857707545867646</string>
+		<key>FacebookClientToken</key>
+		<string>01ee3e1586a31ceeb12afa405ab409b1</string>
+		<key>FacebookDisplayName</key>
+		<string>com.example.flutterFoodninjaBlocTddCleanArc</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-share-api</string>
+		</array>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>

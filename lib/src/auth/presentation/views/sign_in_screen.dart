@@ -11,6 +11,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/entities/user.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/bio_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/forgot_password_screen.dart';
@@ -41,6 +42,16 @@ class _SignInScreenState extends State<SignInScreen> {
     _formKey.currentState?.dispose();
   }
 
+  void _roadPage(LocalUser user) {
+    context.read<UserProvider>().initUser(user as LocalUserModel);
+
+    context.userProvider.user!.initialized ??
+        Navigator.pushReplacementNamed(context, BioScreen.routeName);
+    context.userProvider.user!.initialized!
+        ? Navigator.pushReplacementNamed(context, DashBoard.routeName)
+        : Navigator.pushReplacementNamed(context, BioScreen.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
@@ -48,20 +59,11 @@ class _SignInScreenState extends State<SignInScreen> {
         if (state is AuthError) {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is SignedIn) {
-          context.read<UserProvider>().initUser(state.user as LocalUserModel);
-
-          context.userProvider.user!.initialized ??
-              Navigator.pushReplacementNamed(context, BioScreen.routeName);
-          context.userProvider.user!.initialized!
-              ? Navigator.pushReplacementNamed(context, DashBoard.routeName)
-              : Navigator.pushReplacementNamed(context, BioScreen.routeName);
+          _roadPage(state.user);
         } else if (state is GoogleSignedIn) {
-          context.read<UserProvider>().initUser(state.user as LocalUserModel);
-          context.userProvider.user!.initialized ??
-              Navigator.pushReplacementNamed(context, BioScreen.routeName);
-          context.userProvider.user!.initialized!
-              ? Navigator.pushReplacementNamed(context, DashBoard.routeName)
-              : Navigator.pushReplacementNamed(context, BioScreen.routeName);
+          _roadPage(state.user);
+        } else if (state is FacebookSignedIn) {
+          _roadPage(state.user);
         }
       },
       builder: (context, state) {
@@ -104,7 +106,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         CtmSclMediaButton(
                           image: MediaRes.iconFacebook,
                           text: 'Facebook',
-                          callback: () {},
+                          callback: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            FirebaseAuth.instance.currentUser?.reload();
+                            context.read<AuthBloc>().add(
+                                  const FacebookSignInEvent(),
+                                );
+                          },
                         ),
                         CtmSclMediaButton(
                           image: MediaRes.iconGoogle,

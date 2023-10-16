@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/failures.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/facebook_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/google_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
@@ -21,12 +22,15 @@ class MockUpdateUser extends Mock implements UpdateUser {}
 
 class MockGoogleSignIn extends Mock implements GoogleSignInMethod {}
 
+class MockFacebookSignIn extends Mock implements FacebookSignInMethod {}
+
 void main() {
   late SignIn signIn;
   late SignUp signUp;
   late ForgotPassword forgotPassword;
   late UpdateUser updateUser;
   late GoogleSignInMethod googleSignInMethod;
+  late FacebookSignInMethod facebookSignInMethod;
   late AuthBloc authBloc;
 
   const tSignUpParams = SignUpParams.empty();
@@ -39,12 +43,14 @@ void main() {
     forgotPassword = MockForgotPassword();
     updateUser = MockUpdateUser();
     googleSignInMethod = MockGoogleSignIn();
+    facebookSignInMethod = MockFacebookSignIn();
     authBloc = AuthBloc(
       signIn: signIn,
       signUp: signUp,
       forgotPassword: forgotPassword,
       updateUser: updateUser,
       googleSignInMethod: googleSignInMethod,
+      facebookSignInMethod: facebookSignInMethod,
     );
   });
 
@@ -66,10 +72,58 @@ void main() {
         ' The user may have been deleted',
   );
 
+  group('FacebookSignInEvent', () {
+    const tUser = LocalUserModel.empty();
+    blocTest<AuthBloc, AuthState>(
+      'should emit [AuthLoading, FacebookSignedIn],'
+      ' when [FacebookSignInEvent is added]',
+      build: () {
+        when(
+          () => facebookSignInMethod(),
+        ).thenAnswer(
+          (_) async => const Right(tUser),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        const FacebookSignInEvent(),
+      ),
+      expect: () => [
+        const AuthLoading(),
+        const FacebookSignedIn(tUser),
+      ],
+      verify: (_) {
+        verify(() => facebookSignInMethod()).called(1);
+        verifyNoMoreInteractions(facebookSignInMethod);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'should emit [AuthLoading, AuthError] when signIn fails',
+      build: () {
+        when(() => facebookSignInMethod())
+            .thenAnswer((_) async => Left(tServerFailure));
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        const FacebookSignInEvent(),
+      ),
+      expect: () => [
+        const AuthLoading(),
+        AuthError(tServerFailure.message),
+      ],
+      verify: (_) {
+        verify(() => facebookSignInMethod()).called(1);
+        verifyNoMoreInteractions(facebookSignInMethod);
+      },
+    );
+  });
+
   group('GoogleSignInEvent', () {
     const tUser = LocalUserModel.empty();
     blocTest<AuthBloc, AuthState>(
-      'should emit [AuthLoading, SignedIn] when [GoogleSignInEvent is added]',
+      'should emit [AuthLoading, GoogleSignedIn],'
+      ' when [GoogleSignInEvent is added]',
       build: () {
         when(
           () => googleSignInMethod(),

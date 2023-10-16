@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/enum/update_user_action.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/entities/user.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/facebook_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/google_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
@@ -20,11 +21,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required ForgotPassword forgotPassword,
     required UpdateUser updateUser,
     required GoogleSignInMethod googleSignInMethod,
+    required FacebookSignInMethod facebookSignInMethod,
   })  : _signIn = signIn,
         _signUp = signUp,
         _forgotPassword = forgotPassword,
         _updateUser = updateUser,
         _googleSignInMethod = googleSignInMethod,
+        _facebookSignInMethod = facebookSignInMethod,
         super(const AuthInitial()) {
     on<AuthEvent>((event, emit) {
       emit(const AuthLoading());
@@ -34,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ForgotPasswordEvent>(_forgotPasswordHandler);
     on<UpdateUserEvent>(_updateUserHandler);
     on<GoogleSignInEvent>(_googleSignInHandler);
+    on<FacebookSignInEvent>(_facebookSignInHandler);
   }
 
   final SignIn _signIn;
@@ -41,6 +45,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ForgotPassword _forgotPassword;
   final UpdateUser _updateUser;
   final GoogleSignInMethod _googleSignInMethod;
+  final FacebookSignInMethod _facebookSignInMethod;
+
+  Future<void> _facebookSignInHandler(
+    FacebookSignInEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    final result = await _facebookSignInMethod();
+
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (user) => emit(FacebookSignedIn(user)),
+    );
+  }
 
   Future<void> _googleSignInHandler(
     GoogleSignInEvent event,

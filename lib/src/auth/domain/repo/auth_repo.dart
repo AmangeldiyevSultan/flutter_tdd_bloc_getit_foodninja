@@ -23,4 +23,6 @@ abstract class AuthRepo {
   });
 
   ResultFuture<LocalUser> googleSignIn();
+
+  ResultFuture<LocalUser> facebookSignIn();
 }

@@ -14,6 +14,15 @@ class AuthLoading extends AuthState {
   const AuthLoading();
 }
 
+class FacebookSignedIn extends AuthState {
+  const FacebookSignedIn(this.user);
+
+  final LocalUser user;
+
+  @override
+  List<Object> get props => [user];
+}
+
 class GoogleSignedIn extends AuthState {
   const GoogleSignedIn(this.user);
 
