@@ -25,4 +25,10 @@ abstract class AuthRepo {
   ResultFuture<LocalUser> googleSignIn();
 
   ResultFuture<LocalUser> facebookSignIn();
+
+  ResultFuture<LocalUser> postUserBio({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  });
 }

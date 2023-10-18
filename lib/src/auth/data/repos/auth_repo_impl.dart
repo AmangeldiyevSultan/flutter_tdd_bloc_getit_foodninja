@@ -13,6 +13,24 @@ class AuthRepoImpl extends AuthRepo {
   final AuthRemoteDataSource _remoteDataSource;
 
   @override
+  ResultFuture<LocalUser> postUserBio({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  }) async {
+    try {
+      final result = await _remoteDataSource.postUserBio(
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+      );
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+    }
+  }
+
+  @override
   ResultFuture<LocalUser> facebookSignIn() async {
     try {
       final result = await _remoteDataSource.facebookSignIn();

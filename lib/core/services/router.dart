@@ -46,11 +46,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
                   }
                   final localUser =
                       LocalUserModel.fromMap(snapshot.data!.data()!);
+
                   context.userProvider.initUser(localUser);
+
                   if (context.userProvider.user!.initialized!) {
                     return const DashBoard();
                   } else {
-                    return const BioScreen();
+                    return BlocProvider(
+                      create: (_) => sl<AuthBloc>(),
+                      child: const BioScreen(),
+                    );
                   }
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {

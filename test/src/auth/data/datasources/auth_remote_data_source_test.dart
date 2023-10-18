@@ -15,6 +15,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mocktail/mocktail.dart';
 
+class MockAuthCredential extends Mock implements OAuthCredential {
+  int _token = 1234;
+  String _accessToken = 'tAccessToken_auth';
+  String _idToken = 'tIdToken_auth';
+
+  @override
+  int? get token => _token;
+  set token(int? value) {
+    if (_token != value) _token = value!;
+  }
+
+  @override
+  String? get accessToken => _accessToken;
+  set accessToken(String? value) {
+    if (_accessToken != value) _accessToken = value!;
+  }
+
+  @override
+  String? get idToken => _idToken;
+  set idToken(String? value) {
+    if (_idToken != value) _idToken = value!;
+  }
+}
+
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
 class MockFacebookAuth extends Mock implements FacebookAuth {}
@@ -33,7 +57,8 @@ class MockGoogleSignInAcc extends Mock implements GoogleSignInAccount {
       _signInAuthentication!;
 }
 
-class MockGoogleAccount extends Mock implements GoogleSignInAuthentication {
+class MockGoogleAccountAuthentication extends Mock
+    implements GoogleSignInAuthentication {
   String _accessToken = 'tAccessToken';
   String _idToken = 'tIdToken';
 
@@ -76,8 +101,6 @@ class MockUserCredential extends Mock implements UserCredential {
   }
 }
 
-class MockAuthCredential extends Mock implements AuthCredential {}
-
 void main() {
   late FirebaseFirestore cloudStoreClient;
   late MockFirebaseAuth authClient;
@@ -91,7 +114,7 @@ void main() {
   late UserCredential userCredential;
   late UserCredential googleUserCredential;
   late MockUser mockUser;
-  late GoogleSignInAuthentication mockGoogleAccount;
+  late GoogleSignInAuthentication googleSignInAuthentication;
 
   late DocumentReference<DataMap> documentReference;
   const tUser = LocalUserModel.empty();
@@ -109,9 +132,9 @@ void main() {
     );
 
     mockUser = MockUser()..uid = documentReference.id;
-    mockGoogleAccount = MockGoogleAccount();
+    googleSignInAuthentication = MockGoogleAccountAuthentication();
 
-    googleSignInAccount = MockGoogleSignInAcc(mockGoogleAccount);
+    googleSignInAccount = MockGoogleSignInAcc(googleSignInAuthentication);
     googleUserCredential = MockGoogleUserCredential();
     userCredential = MockUserCredential(mockUser);
     dataSource = AuthRemoteDataSourceImpl(
@@ -171,18 +194,23 @@ void main() {
     late OAuthCredential googleCred;
 
     setUp(() async {
+      googleCred = MockAuthCredential();
       final gAuth = await googleSignInAccount.authentication;
+
       googleCred = GoogleAuthProvider.credential(
         accessToken: gAuth.accessToken,
         idToken: gAuth.idToken,
       );
-      print(googleCred);
     });
     test('should return [LocalUserModel] when no [Exception] is thrown',
         () async {
       when(
         () => googleSignIn.signIn(),
       ).thenAnswer((_) async => googleSignInAccount);
+
+      when(
+        GoogleAuthProvider.credential,
+      ).thenAnswer((_) => googleCred);
 
       when(
         () => authClient.signInWithCredential(googleCred),

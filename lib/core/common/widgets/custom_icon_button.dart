@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 
 class CustomIconBtn extends StatelessWidget {
-  const CustomIconBtn({super.key});
+  const CustomIconBtn({this.onPressed, super.key});
+
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +13,10 @@ class CustomIconBtn extends StatelessWidget {
       color: Colours.arrowBackColour,
       iconSize: 20,
       padding: EdgeInsets.zero,
-      onPressed: () {
-        Navigator.pop(context);
-      },
+      onPressed: onPressed ??
+          () {
+            Navigator.pop(context);
+          },
       icon: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(

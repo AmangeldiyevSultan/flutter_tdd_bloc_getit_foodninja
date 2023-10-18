@@ -9,21 +9,24 @@ class BodyTemplate extends StatelessWidget {
   const BodyTemplate({
     required this.title,
     required this.onPressed,
-    required this.child,
+    required this.buttonChild,
     required this.childs,
     this.subtitle,
+    this.ctmIconBtnPress,
     super.key,
   });
 
   final String title;
   final String? subtitle;
-  final Widget child;
+  final Widget buttonChild;
   final VoidCallback onPressed;
   final List<Widget> childs;
+  final VoidCallback? ctmIconBtnPress;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           width: context.width,
@@ -40,7 +43,9 @@ class BodyTemplate extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const CustomIconBtn(),
+                  CustomIconBtn(
+                    onPressed: ctmIconBtnPress,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -71,8 +76,8 @@ class BodyTemplate extends StatelessWidget {
                 width: context.width * 0.53,
                 height: context.height * 0.067,
                 onPressed: onPressed,
-                child: child,
-              ),
+                child: buttonChild,
+              )
             ],
           ),
         ),

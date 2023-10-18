@@ -13,3 +13,11 @@ extension EmailAuth on String {
         '_emailauth${email.substring(atIndex)}';
   }
 }
+
+extension ValidPhoneNumber on String {
+  bool isValidPhoneNumber() {
+    return RegExp(
+      r'(^(?:[+0]9)?7[0-9]{10}$)',
+    ).hasMatch(this);
+  }
+}

@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:js';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/app/providers/user_provider.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/enum/update_user_action.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/exceptions.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
@@ -14,6 +16,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRemoteDataSource {
   const AuthRemoteDataSource();
+
+  Future<LocalUserModel> postUserBio({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  });
 
   Future<void> forgotPassword(String email);
 
@@ -57,6 +65,42 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FacebookAuth _facebookAuth;
 
   @override
+  Future<LocalUserModel> postUserBio({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  }) async {
+    try {
+      final user = _authClient.currentUser;
+      if (user == null) {
+        throw const ServerException(
+          message: 'Please try again later',
+          statusCode: 'Unknown Error',
+        );
+      }
+
+      await _cloudStoreClient.collection('users').doc(user.uid).set({
+        'firstName': firstName,
+        'lastName': lastName,
+        'phoneNumber': phoneNumber,
+        'initialized': true,
+      });
+
+      final userData = await _getUserData(user.uid);
+
+      return LocalUserModel.fromMap(userData.data()!);
+    } on FirebaseException catch (e) {
+      throw ServerException(
+        message: e.message ?? 'Error Occured!',
+        statusCode: e.code,
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
   Future<LocalUserModel> facebookSignIn() async {
     try {
       final facebookAuthResult = await _facebookAuth.login();
@@ -65,8 +109,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         facebookAuthResult.accessToken!.token,
       );
 
-      final result = await FirebaseAuth.instance
-          .signInWithCredential(facebookAuthCredential);
+      final result =
+          await _authClient.signInWithCredential(facebookAuthCredential);
 
       final user = result.user;
 
@@ -82,7 +126,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return LocalUserModel.fromMap(userData.data()!);
       }
 
-      await _setUserData(user, user.email!);
+      await _setUserSignInData(user, user.email!);
 
       userData = await _getUserData(user.uid);
 
@@ -133,7 +177,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return LocalUserModel.fromMap(userData.data()!);
       }
 
-      await _setUserData(user, user.email!);
+      await _setUserSignInData(user, user.email!);
 
       userData = await _getUserData(user.uid);
 
@@ -194,7 +238,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return LocalUserModel.fromMap(userData.data()!);
       }
 
-      await _setUserData(user, email);
+      await _setUserSignInData(user, email);
 
       userData = await _getUserData(user.uid);
 
@@ -223,7 +267,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         password: password,
       );
 
-      await _setUserData(userCred.user!, email);
+      await _setUserSignInData(userCred.user!, email);
     } on FirebaseAuthException catch (e) {
       throw ServerException(
         message: e.message ?? 'Error Occured!',
@@ -295,7 +339,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return _cloudStoreClient.collection('users').doc(uid).get();
   }
 
-  Future<void> _setUserData(User user, String fallbackEmail) async {
+  Future<void> _setUserSignInData(
+    User user,
+    String fallbackEmail,
+  ) async {
     await _cloudStoreClient.collection('users').doc(user.uid).set(
           LocalUserModel(
             uid: user.uid,

@@ -68,7 +68,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
                 floatingLabelStyle: const TextStyle(color: Colours.labelColour),
-                iconPrefixSource: MediaRes.vectorMessage,
+                iconPrefixSourceWidget: Image.asset(MediaRes.vectorMessage),
                 controller: _emailController,
                 hintText: 'Email',
                 validator: (String? value) =>
@@ -76,7 +76,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
           ],
-          child: state is AuthLoading
+          buttonChild: state is AuthLoading
               ? const Loading(
                   width: 20,
                   height: 20,

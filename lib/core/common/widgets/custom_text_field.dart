@@ -7,25 +7,27 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     required this.controller,
     required this.hintText,
-    this.iconPrefixSource,
+    this.iconPrefixSourceWidget,
     this.iconSuffixSource,
     this.textInputType,
     this.validator,
     this.overrideValidator = false,
     this.label,
     this.floatingLabelStyle,
+    this.prefixWidget,
     super.key,
   });
 
   final TextEditingController controller;
   final String hintText;
-  final String? iconPrefixSource;
+  final Widget? iconPrefixSourceWidget;
   final String? iconSuffixSource;
   final TextInputType? textInputType;
   final String? Function(String?)? validator;
   final bool overrideValidator;
   final Widget? label;
   final TextStyle? floatingLabelStyle;
+  final Widget? prefixWidget;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -74,11 +76,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         controller: widget.controller,
         decoration: InputDecoration(
+          prefix: widget.prefixWidget,
           floatingLabelStyle: widget.floatingLabelStyle,
           label: widget.label,
-          prefixIcon: widget.iconPrefixSource != null
-              ? Image.asset(widget.iconPrefixSource!)
-              : null,
+          prefixIcon: widget.iconPrefixSourceWidget,
           suffixIcon: widget.iconSuffixSource != null
               ? IconButton(
                   onPressed: _obscureTextButton,

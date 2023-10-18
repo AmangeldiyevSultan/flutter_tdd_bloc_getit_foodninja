@@ -28,7 +28,7 @@ class SignUpForm extends StatelessWidget {
         children: [
           CustomTextField(
             textInputType: TextInputType.emailAddress,
-            iconPrefixSource: MediaRes.iconMessage,
+            iconPrefixSourceWidget: Image.asset(MediaRes.iconMessage),
             controller: emailController,
             hintText: 'Email',
             validator: (String? value) =>
@@ -38,7 +38,7 @@ class SignUpForm extends StatelessWidget {
             height: 15,
           ),
           CustomTextField(
-            iconPrefixSource: MediaRes.iconLock,
+            iconPrefixSourceWidget: Image.asset(MediaRes.iconLock),
             iconSuffixSource: MediaRes.iconShow,
             controller: passwordController,
             hintText: 'Password',
@@ -49,7 +49,7 @@ class SignUpForm extends StatelessWidget {
             height: 15,
           ),
           CustomTextField(
-            iconPrefixSource: MediaRes.iconLock,
+            iconPrefixSourceWidget: Image.asset(MediaRes.iconLock),
             iconSuffixSource: MediaRes.iconShow,
             controller: correctPasswordController,
             hintText: 'Confirm Password',
