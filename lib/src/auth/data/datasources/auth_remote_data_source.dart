@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:js';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,7 +78,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       }
 
-      await _cloudStoreClient.collection('users').doc(user.uid).set({
+      await _updateUserData({
         'firstName': firstName,
         'lastName': lastName,
         'phoneNumber': phoneNumber,
@@ -89,7 +88,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final userData = await _getUserData(user.uid);
 
       return LocalUserModel.fromMap(userData.data()!);
-    } on FirebaseException catch (e) {
+    } on FirebaseAuthException catch (e) {
       throw ServerException(
         message: e.message ?? 'Error Occured!',
         statusCode: e.code,
@@ -126,7 +125,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return LocalUserModel.fromMap(userData.data()!);
       }
 
-      await _setUserSignInData(user, user.email!);
+      await _setUserData(user, user.email!);
 
       userData = await _getUserData(user.uid);
 
@@ -177,7 +176,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return LocalUserModel.fromMap(userData.data()!);
       }
 
-      await _setUserSignInData(user, user.email!);
+      await _setUserData(user, user.email!);
 
       userData = await _getUserData(user.uid);
 
@@ -238,7 +237,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return LocalUserModel.fromMap(userData.data()!);
       }
 
-      await _setUserSignInData(user, email);
+      await _setUserData(user, email);
 
       userData = await _getUserData(user.uid);
 
@@ -267,7 +266,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         password: password,
       );
 
-      await _setUserSignInData(userCred.user!, email);
+      await _setUserData(userCred.user!, email);
     } on FirebaseAuthException catch (e) {
       throw ServerException(
         message: e.message ?? 'Error Occured!',
@@ -298,14 +297,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           await _updateUserData({'firstName': userData});
         case UpdateUserAction.lastName:
           await _updateUserData({'lastName': userData});
+
         case UpdateUserAction.profilePic:
           final ref = _dbClient
               .ref()
               .child('profile_pics/${_authClient.currentUser?.uid}');
+
           await ref.putFile(userData as File);
           final url = await ref.getDownloadURL();
           await _authClient.currentUser?.updatePhotoURL(url);
           await _updateUserData({'profilePic': url});
+          final userProvider = UserProvider();
+          userProvider.user?.copyWith(profilePic: url);
+
         case UpdateUserAction.password:
           if (_authClient.currentUser?.email == null) {
             throw const ServerException(
@@ -339,7 +343,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return _cloudStoreClient.collection('users').doc(uid).get();
   }
 
-  Future<void> _setUserSignInData(
+  Future<void> _setUserData(
     User user,
     String fallbackEmail,
   ) async {

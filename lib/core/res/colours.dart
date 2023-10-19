@@ -22,4 +22,5 @@ class Colours {
   static const arrowBackColour = Color(0xffDA6317);
   static const lightAmberColour = Color(0xffF9A84D);
   static const labelColour = Color(0xff828282);
+  static const setLocationBtnColour = Color(0xffF6F6F6);
 }

@@ -4,6 +4,21 @@ sealed class AuthEvent extends Equatable {
   const AuthEvent();
 }
 
+class UserPostBioEvent extends AuthEvent {
+  const UserPostBioEvent({
+    required this.firstName,
+    required this.lastName,
+    required this.phoneNumber,
+  });
+
+  final String firstName;
+  final String lastName;
+  final String phoneNumber;
+
+  @override
+  List<String> get props => [firstName, lastName, phoneNumber];
+}
+
 class SignInEvent extends AuthEvent {
   const SignInEvent({
     required this.email,

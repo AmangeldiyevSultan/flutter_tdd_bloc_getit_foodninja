@@ -7,6 +7,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/entities/us
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/facebook_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/google_sign_in.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/post_user_bio.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';
@@ -22,12 +23,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required UpdateUser updateUser,
     required GoogleSignInMethod googleSignInMethod,
     required FacebookSignInMethod facebookSignInMethod,
+    required PostUserBio postUserBio,
   })  : _signIn = signIn,
         _signUp = signUp,
         _forgotPassword = forgotPassword,
         _updateUser = updateUser,
         _googleSignInMethod = googleSignInMethod,
         _facebookSignInMethod = facebookSignInMethod,
+        _postUserBio = postUserBio,
         super(const AuthInitial()) {
     on<AuthEvent>((event, emit) {
       emit(const AuthLoading());
@@ -38,6 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<UpdateUserEvent>(_updateUserHandler);
     on<GoogleSignInEvent>(_googleSignInHandler);
     on<FacebookSignInEvent>(_facebookSignInHandler);
+    on<UserPostBioEvent>(_postUserBioHandler);
   }
 
   final SignIn _signIn;
@@ -46,6 +50,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UpdateUser _updateUser;
   final GoogleSignInMethod _googleSignInMethod;
   final FacebookSignInMethod _facebookSignInMethod;
+  final PostUserBio _postUserBio;
+
+  Future<void> _postUserBioHandler(
+    UserPostBioEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    final result = await _postUserBio(
+      PostUserBioParams(
+        firstName: event.firstName,
+        lastName: event.lastName,
+        phoneNumber: event.phoneNumber,
+      ),
+    );
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (user) => emit(UserBioPosted(user)),
+    );
+  }
 
   Future<void> _facebookSignInHandler(
     FacebookSignInEvent event,
@@ -123,7 +145,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await _updateUser(
       UpdateUserParams(
         userAction: event.userAction,
-        userData: event.userAction,
+        userData: event.userData,
       ),
     );
     result.fold(

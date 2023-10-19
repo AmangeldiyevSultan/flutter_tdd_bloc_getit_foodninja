@@ -30,55 +30,60 @@ class BodyTemplate extends StatelessWidget {
       body: SafeArea(
         child: Container(
           width: context.width,
-          padding: const EdgeInsets.all(25),
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(MediaRes.backgroundPdf2),
+              fit: BoxFit.cover,
+              image: AssetImage(
+                MediaRes.backgroundPdf2,
+              ),
               alignment: Alignment.topCenter,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  CustomIconBtn(
-                    onPressed: ctmIconBtnPress,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500,
+          child: Padding(
+            padding: const EdgeInsets.all(25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    CustomIconBtn(
+                      onPressed: ctmIconBtnPress,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    subtitle ?? '',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontFamily: Fonts.poppins,
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ...childs,
-                ],
-              ),
-              CustomButton(
-                width: context.width * 0.53,
-                height: context.height * 0.067,
-                onPressed: onPressed,
-                child: buttonChild,
-              )
-            ],
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      subtitle ?? '',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontFamily: Fonts.poppins,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ...childs,
+                  ],
+                ),
+                CustomButton(
+                  width: context.width * 0.53,
+                  height: context.height * 0.067,
+                  onPressed: onPressed,
+                  child: buttonChild,
+                )
+              ],
+            ),
           ),
         ),
       ),

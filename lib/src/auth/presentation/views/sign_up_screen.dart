@@ -68,69 +68,74 @@ class _SignUpScreenState extends State<SignUpScreen> {
           body: SafeArea(
             child: SingleChildScrollView(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(MediaRes.backgroundPdf),
+                    fit: BoxFit.cover,
+                    image: AssetImage(
+                      MediaRes.backgroundPdf,
+                    ),
                     alignment: Alignment.topCenter,
                   ),
                 ),
-                child: Column(
-                  children: [
-                    const SignLogo(
-                      signText: 'Sign Up For Free',
-                    ),
-                    SizedBox(
-                      height: context.height * 0.02,
-                    ),
-                    SignUpForm(
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                      correctPasswordController: _correctPasswordController,
-                      formKey: _formKey,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomButton(
-                      child: state is AuthLoading
-                          ? const Loading(
-                              width: 20,
-                              height: 20,
-                            )
-                          : const Text('Create Account'),
-                      onPressed: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        FirebaseAuth.instance.currentUser?.reload();
-                        if (_formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                                SignUpEvent(
-                                  email: _emailController.text.trim(),
-                                  password: _passwordController.text.trim(),
-                                ),
-                              );
-                        }
-                      },
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          SignInScreen.routeName,
-                        );
-                      },
-                      child: const Text(
-                        'already have an account?',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colours.underLineColor,
-                          fontSize: 12,
-                          color: Colours.underLineColor,
-                          fontFamily: Fonts.viga,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      const SignLogo(
+                        signText: 'Sign Up For Free',
+                      ),
+                      SizedBox(
+                        height: context.height * 0.02,
+                      ),
+                      SignUpForm(
+                        emailController: _emailController,
+                        passwordController: _passwordController,
+                        correctPasswordController: _correctPasswordController,
+                        formKey: _formKey,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CustomButton(
+                        child: state is AuthLoading
+                            ? const Loading(
+                                width: 20,
+                                height: 20,
+                              )
+                            : const Text('Create Account'),
+                        onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          FirebaseAuth.instance.currentUser?.reload();
+                          if (_formKey.currentState!.validate()) {
+                            context.read<AuthBloc>().add(
+                                  SignUpEvent(
+                                    email: _emailController.text.trim(),
+                                    password: _passwordController.text.trim(),
+                                  ),
+                                );
+                          }
+                        },
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            SignInScreen.routeName,
+                          );
+                        },
+                        child: const Text(
+                          'already have an account?',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colours.underLineColor,
+                            fontSize: 12,
+                            color: Colours.underLineColor,
+                            fontFamily: Fonts.viga,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

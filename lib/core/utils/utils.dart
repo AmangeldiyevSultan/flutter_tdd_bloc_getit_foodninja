@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CoreUtils {
   const CoreUtils._();
@@ -38,5 +43,34 @@ class CoreUtils {
           margin: const EdgeInsets.all(10),
         ),
       );
+  }
+
+  static Future<File?> pickImageFrom(
+    BuildContext context,
+    ImageSource imageSource,
+  ) async {
+    File? image;
+    try {
+      final pickedImage = await ImagePicker().pickImage(source: imageSource);
+      if (pickedImage != null) {
+        image = File(pickedImage.path);
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return image;
+  }
+
+  static Future<File> getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.create(recursive: true);
+    await file.writeAsBytes(
+      byteData.buffer
+          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+    );
+
+    return file;
   }
 }

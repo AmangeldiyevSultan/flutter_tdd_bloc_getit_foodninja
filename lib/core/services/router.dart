@@ -11,8 +11,11 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_mo
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/bio_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/forgot_password_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/set_location.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_success.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/upload_photo_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/datasource/on_boarding_local_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
@@ -23,7 +26,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case '/':
       final prefs = sl<SharedPreferences>();
-
       return _pageBuilder(
         (context) {
           if (prefs.getBool(kFirstTimerKey) ?? true) {
@@ -92,6 +94,27 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           create: (_) => sl<AuthBloc>(),
           child: const SignInScreen(),
         ),
+        settings: settings,
+      );
+    case UpdatePhotoScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<AuthBloc>(),
+          child: const UpdatePhotoScreen(),
+        ),
+        settings: settings,
+      );
+    case SetLocation.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<AuthBloc>(),
+          child: const SetLocation(),
+        ),
+        settings: settings,
+      );
+    case SignUpSuccess.routeName:
+      return _pageBuilder(
+        (_) => const SignUpSuccess(),
         settings: settings,
       );
     case SignUpScreen.routeName:

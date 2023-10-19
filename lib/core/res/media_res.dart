@@ -5,6 +5,7 @@ class MediaRes {
   static const _baseVectors = 'assets/vectors';
   static const _baseLotties = 'assets/lotties';
   static const _baseIcons = 'assets/icons';
+  static const _baseSvg = 'assets/svg_img';
 
   static const background = '$_baseImages/background.png';
   static const backgroundPdf = '$_baseImages/background-pdf.png';
@@ -15,6 +16,7 @@ class MediaRes {
       '$_baseVectors/vector-illustration-boarding-1.png';
   static const illustrationOnboarding_2 =
       '$_baseVectors/vector-illustration-boarding-2.png';
+  static const vectorMessage = '$_baseVectors/vector-message.png';
 
   static const underContruction = '$_baseLotties/under_construction.json';
 
@@ -23,5 +25,9 @@ class MediaRes {
   static const iconShow = '$_baseIcons/icon-show.png';
   static const iconLock = '$_baseIcons/icon-lock.png';
   static const iconMessage = '$_baseIcons/icon-message.png';
-  static const vectorMessage = '$_baseVectors/vector-message.png';
+  static const iconCamera = '$_baseIcons/icon-camera.jpg';
+  static const iconGallery = '$_baseIcons/icon-gallery.jpg';
+
+  static const svgPinLogo = '$_baseSvg/logo-pin.svg';
+  static const svgSuccessLogo = '$_baseSvg/logo-success.svg';
 }

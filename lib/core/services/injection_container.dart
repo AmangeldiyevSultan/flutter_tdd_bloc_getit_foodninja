@@ -8,6 +8,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/repo/auth_r
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/facebook_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/google_sign_in.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/post_user_bio.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';

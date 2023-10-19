@@ -149,11 +149,96 @@ void main() {
 
   const tPassword = 'tPassword';
   const tEmail = 'tEmail';
+  const tFirstName = 'tFirstName';
+  const tLastName = 'tLastName';
+  const tPhoneNumber = 'tPhoneNumber';
 
   final tFirebaseAuthException = FirebaseAuthException(
     code: 'user-not-found',
     message: 'There is no record corresponding to this identifier',
   );
+
+  final tFirebaseException = FirebaseException(
+    plugin: 'Error',
+    code: 'collection-not-found',
+    message: 'There is no record corresponding to this identifier',
+  );
+
+  group('userPostBio', () {
+    test('should return [LocalUserModel] when no [Exception] is thrown',
+        () async {
+      final result = await dataSource.postUserBio(
+        firstName: tFirstName,
+        lastName: tLastName,
+        phoneNumber: tPhoneNumber,
+      );
+      expect(result.firstName, equals(tFirstName));
+      expect(result.phoneNumber, equals(tPhoneNumber));
+      expect(result.lastName, equals(tLastName));
+      expect(result, equals(isA<LocalUserModel>()));
+    });
+
+    test(
+        'should throw [ServerException] when [FirebaseException] is'
+        ' thrown', () {
+      when(
+        () async => dataSource.postUserBio(
+          firstName: tFirstName,
+          lastName: tLastName,
+          phoneNumber: tPhoneNumber,
+        ),
+      ).thenThrow(tFirebaseException);
+
+      final result = dataSource.postUserBio(
+        firstName: tFirstName,
+        lastName: tLastName,
+        phoneNumber: tPhoneNumber,
+      );
+
+      expect(result, equals(throwsA(isA<ServerException>())));
+      verify(
+        () => dataSource.postUserBio(
+          firstName: tFirstName,
+          lastName: tLastName,
+          phoneNumber: tPhoneNumber,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(cloudStoreClient);
+    });
+
+    test('should throw [ServerException] when user is null after sign in', () {
+      when(
+        () => dataSource.postUserBio(
+          firstName: tFirstName,
+          lastName: tLastName,
+          phoneNumber: tPhoneNumber,
+        ),
+      ).thenAnswer((_) async => const LocalUserModel.empty());
+
+      final call = dataSource.postUserBio;
+
+      expect(
+        () async => call(
+          firstName: tFirstName,
+          lastName: tLastName,
+          phoneNumber: tPhoneNumber,
+        ),
+        equals(
+          throwsA(
+            isA<ServerException>(),
+          ),
+        ),
+      );
+      verify(
+        () => dataSource.postUserBio(
+          firstName: tFirstName,
+          lastName: tLastName,
+          phoneNumber: tPhoneNumber,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(authClient);
+    });
+  });
 
   group('forgotPassword', () {
     test('should complete successfully when no [Exception] is thrown', () {
@@ -218,7 +303,7 @@ void main() {
 
       final result = await dataSource.googleSignIn();
 
-      // expect(result.lastName, '');
+      expect(result.lastName, '');
       verify(
         () => authClient.signInWithCredential(googleCred),
       ).called(1);

@@ -1,9 +1,13 @@
-import 'package:country_picker/country_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/app/providers/user_provider.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/loading_state.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_in_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/upload_photo_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/bio_form.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/body_template.dart';
 
@@ -22,8 +26,6 @@ class _BioScreenState extends State<BioScreen> {
   final _lastName = TextEditingController();
   final _phoneNumer = TextEditingController();
 
-  late Country country;
-
   @override
   void dispose() {
     super.dispose();
@@ -36,14 +38,34 @@ class _BioScreenState extends State<BioScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AuthError) {
+          CoreUtils.showSnackBar(context, state.message);
+        } else if (state is UserBioPosted) {
+          context.read<UserProvider>().user = state.user as LocalUserModel;
+
+          Navigator.pushNamed(context, UpdatePhotoScreen.routeName);
+        }
+      },
       builder: (context, state) {
         return BodyTemplate(
-          title: 'Fill in your io to get\n started',
+          title: 'Fill in your in to get\nstarted',
           subtitle: 'This data will be displayed in your'
               ' accound profile for security',
           onPressed: () {
-            if (_formKey.currentState!.validate()) {}
+            if (_formKey.currentState!.validate()) {
+              FocusManager.instance.primaryFocus?.unfocus();
+              FirebaseAuth.instance.currentUser?.reload();
+              context.read<AuthBloc>().add(
+                    UserPostBioEvent(
+                      firstName: _firstName.text.trim(),
+                      lastName: _lastName.text.trim(),
+                      phoneNumber: _phoneNumer.text.trim().isNotEmpty
+                          ? '+${_phoneNumer.text.trim()}'
+                          : _phoneNumer.text.trim(),
+                    ),
+                  );
+            }
           },
           childs: [
             BioForm(

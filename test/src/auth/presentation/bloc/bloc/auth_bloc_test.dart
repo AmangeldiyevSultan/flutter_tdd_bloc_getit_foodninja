@@ -5,6 +5,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_mo
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/facebook_sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/forgot_password.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/google_sign_in.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/post_user_bio.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_in.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';
@@ -24,6 +25,8 @@ class MockGoogleSignIn extends Mock implements GoogleSignInMethod {}
 
 class MockFacebookSignIn extends Mock implements FacebookSignInMethod {}
 
+class MockPostUserBio extends Mock implements PostUserBio {}
+
 void main() {
   late SignIn signIn;
   late SignUp signUp;
@@ -31,11 +34,13 @@ void main() {
   late UpdateUser updateUser;
   late GoogleSignInMethod googleSignInMethod;
   late FacebookSignInMethod facebookSignInMethod;
+  late PostUserBio postUserBio;
   late AuthBloc authBloc;
 
   const tSignUpParams = SignUpParams.empty();
   const tSignInParams = SignInParams.empty();
   const tUpdateUserParams = UpdateUserParams.empty();
+  const tPostUserBioParams = PostUserBioParams.empty();
 
   setUp(() {
     signIn = MockSignIn();
@@ -44,6 +49,7 @@ void main() {
     updateUser = MockUpdateUser();
     googleSignInMethod = MockGoogleSignIn();
     facebookSignInMethod = MockFacebookSignIn();
+    postUserBio = MockPostUserBio();
     authBloc = AuthBloc(
       signIn: signIn,
       signUp: signUp,
@@ -51,6 +57,7 @@ void main() {
       updateUser: updateUser,
       googleSignInMethod: googleSignInMethod,
       facebookSignInMethod: facebookSignInMethod,
+      postUserBio: postUserBio,
     );
   });
 
@@ -58,6 +65,7 @@ void main() {
     registerFallbackValue(tSignInParams);
     registerFallbackValue(tSignUpParams);
     registerFallbackValue(tUpdateUserParams);
+    registerFallbackValue(tPostUserBioParams);
   });
 
   tearDown(() => authBloc.close());
@@ -162,6 +170,61 @@ void main() {
       verify: (_) {
         verify(() => googleSignInMethod()).called(1);
         verifyNoMoreInteractions(googleSignInMethod);
+      },
+    );
+  });
+
+  group('PostUserBioEvent', () {
+    const tUser = LocalUserModel.empty();
+    blocTest<AuthBloc, AuthState>(
+      'should emit [AuthLoading, UserPostedBio] when '
+      '[UserPostBioEvent is added]',
+      build: () {
+        when(
+          () => postUserBio(any()),
+        ).thenAnswer(
+          (_) async => const Right(tUser),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        UserPostBioEvent(
+          firstName: tPostUserBioParams.firstName,
+          lastName: tPostUserBioParams.lastName,
+          phoneNumber: tPostUserBioParams.phoneNumber,
+        ),
+      ),
+      expect: () => [
+        const AuthLoading(),
+        const UserBioPosted(tUser),
+      ],
+      verify: (_) {
+        verify(() => postUserBio(tPostUserBioParams)).called(1);
+        verifyNoMoreInteractions(postUserBio);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'should emit [AuthLoading, AuthError] when signIn fails',
+      build: () {
+        when(() => postUserBio(any()))
+            .thenAnswer((_) async => Left(tServerFailure));
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        UserPostBioEvent(
+          firstName: tPostUserBioParams.firstName,
+          lastName: tPostUserBioParams.lastName,
+          phoneNumber: tPostUserBioParams.phoneNumber,
+        ),
+      ),
+      expect: () => [
+        const AuthLoading(),
+        AuthError(tServerFailure.message),
+      ],
+      verify: (_) {
+        verify(() => postUserBio(tPostUserBioParams)).called(1);
+        verifyNoMoreInteractions(postUserBio);
       },
     );
   });
