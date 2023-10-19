@@ -18,6 +18,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_in_form.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_logo.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_template.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -67,111 +68,96 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(
-                      MediaRes.backgroundPdf,
+        return SignTemplate(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SignLogo(
+                  signText: 'Login To Your Account',
+                ),
+                SignInForm(
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                  formKey: _formKey,
+                ),
+                SizedBox(
+                  height: context.height * 0.02,
+                ),
+                const Text(
+                  'Or Continue With',
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+                SizedBox(
+                  height: context.height * 0.02,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CtmSclMediaButton(
+                      image: MediaRes.svgFacebookIcon,
+                      text: 'Facebook',
+                      callback: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        FirebaseAuth.instance.currentUser?.reload();
+                        context.read<AuthBloc>().add(
+                              const FacebookSignInEvent(),
+                            );
+                      },
                     ),
-                    alignment: Alignment.topCenter,
-                  ),
+                    CtmSclMediaButton(
+                      image: MediaRes.svgGoogleIcon,
+                      text: 'Google',
+                      callback: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        FirebaseAuth.instance.currentUser?.reload();
+                        context.read<AuthBloc>().add(
+                              const GoogleSignInEvent(),
+                            );
+                      },
+                    ),
+                  ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      const SignLogo(
-                        signText: 'Login To Your Account',
-                      ),
-                      SignInForm(
-                        emailController: _emailController,
-                        passwordController: _passwordController,
-                        formKey: _formKey,
-                      ),
-                      SizedBox(
-                        height: context.height * 0.02,
-                      ),
-                      const Text(
-                        'Or Continue With',
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                      SizedBox(
-                        height: context.height * 0.02,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CtmSclMediaButton(
-                            image: MediaRes.iconFacebook,
-                            text: 'Facebook',
-                            callback: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              FirebaseAuth.instance.currentUser?.reload();
-                              context.read<AuthBloc>().add(
-                                    const FacebookSignInEvent(),
-                                  );
-                            },
-                          ),
-                          CtmSclMediaButton(
-                            image: MediaRes.iconGoogle,
-                            text: 'Google',
-                            callback: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              FirebaseAuth.instance.currentUser?.reload();
-                              context.read<AuthBloc>().add(
-                                    const GoogleSignInEvent(),
-                                  );
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      _textButton('Forgot Your Password?', () {
-                        Navigator.pushNamed(
-                          context,
-                          ForgotPasswordScreen.routeName,
-                        );
-                      }),
-                      _textButton('Create Account', () {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          SignUpScreen.routeName,
-                        );
-                      }),
-                      CustomButton(
-                        height: context.height * 0.067,
-                        width: context.width * 0.53,
-                        child: state is AuthLoading
-                            ? const Loading(
-                                width: 20,
-                                height: 20,
-                              )
-                            : const Text('Login'),
-                        onPressed: () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          FirebaseAuth.instance.currentUser?.reload();
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                                  SignInEvent(
-                                    email: _emailController.text.trim(),
-                                    password: _passwordController.text.trim(),
-                                  ),
-                                );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
+                _textButton('Forgot Your Password?', () {
+                  Navigator.pushNamed(
+                    context,
+                    ForgotPasswordScreen.routeName,
+                  );
+                }),
+                _textButton('Create Account', () {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    SignUpScreen.routeName,
+                  );
+                }),
+                CustomButton(
+                  height: context.height * 0.067,
+                  width: context.width * 0.53,
+                  child: state is AuthLoading
+                      ? const Loading(
+                          width: 20,
+                          height: 20,
+                        )
+                      : const Text('Login'),
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    FirebaseAuth.instance.currentUser?.reload();
+                    if (_formKey.currentState!.validate()) {
+                      context.read<AuthBloc>().add(
+                            SignInEvent(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            ),
+                          );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         );
@@ -194,7 +180,7 @@ class _SignInScreenState extends State<SignInScreen> {
             decorationColor: Colours.underLineColor,
             fontSize: 15,
             color: Colours.underLineColor,
-            fontFamily: Fonts.viga,
+            fontFamily: Fonts.inter,
           ),
         ),
       ),

@@ -10,6 +10,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/body_template.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -64,11 +65,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   'Via email:',
                   style: TextStyle(
                     fontSize: 14,
-                    fontFamily: Fonts.poppins,
+                    fontFamily: Fonts.inter,
                   ),
                 ),
                 floatingLabelStyle: const TextStyle(color: Colours.labelColour),
-                iconPrefixSourceWidget: Image.asset(MediaRes.vectorMessage),
+                iconPrefixSourceWidget: Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: SvgPicture.asset(
+                    MediaRes.svgEmailIcon,
+                  ),
+                ),
                 controller: _emailController,
                 hintText: 'Email',
                 validator: (String? value) =>

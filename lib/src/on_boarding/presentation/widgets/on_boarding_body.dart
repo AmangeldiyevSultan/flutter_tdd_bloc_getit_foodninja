@@ -4,6 +4,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_exte
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/page_content.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class OnBoardingBody extends StatelessWidget {
@@ -21,7 +22,7 @@ class OnBoardingBody extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
+        SvgPicture.asset(
           pageContent.image,
           height: context.height * .5,
         ),

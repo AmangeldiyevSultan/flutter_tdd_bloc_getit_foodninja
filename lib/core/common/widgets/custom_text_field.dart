@@ -83,7 +83,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
           suffixIcon: widget.iconSuffixSource != null
               ? IconButton(
                   onPressed: _obscureTextButton,
-                  icon: Image.asset(widget.iconSuffixSource!),
+                  icon: Icon(
+                    obscureText
+                        ? Icons.visibility_off_sharp
+                        : Icons.visibility_sharp,
+                    color: Colors.grey,
+                  ),
                 )
               : null,
           filled: true,
@@ -93,9 +98,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             horizontal: context.width * 0.065,
             vertical: context.height * 0.025,
           ),
-          hintStyle: const TextStyle(
+          hintStyle: TextStyle(
             fontSize: 14,
-            fontFamily: Fonts.poppins,
+            fontFamily: Fonts.inter,
             fontWeight: FontWeight.w200,
             color: Colours.hintColour,
           ),

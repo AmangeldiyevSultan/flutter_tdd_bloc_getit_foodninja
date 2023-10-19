@@ -58,10 +58,13 @@ flutter:
     - assets/icons/
     - assets/lotties/
     - assets/svg_img/
+    - assets/svg_img/logo.svg
 
   fonts:
     - family: Poppins
       fonts:
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+          weight: 400
         - asset: assets/fonts/Poppins/Poppins-Bold.ttf
           weight: 700
         - asset: assets/fonts/Poppins/Poppins-BoldItalic.ttf
@@ -72,8 +75,6 @@ flutter:
         - asset: assets/fonts/Poppins/Poppins-LightItalic.ttf
           style: italic
           weight: 300
-        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
-          weight: 400
 
     - family: BentonSans
       fonts:

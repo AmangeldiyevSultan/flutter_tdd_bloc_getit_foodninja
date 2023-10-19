@@ -4,6 +4,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/custom_
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BodyTemplate extends StatelessWidget {
   const BodyTemplate({
@@ -27,65 +28,62 @@ class BodyTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          width: context.width,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                MediaRes.backgroundPdf2,
+      body: Stack(
+        children: [
+          SizedBox(
+            width: double.maxFinite,
+            child: SvgPicture.asset(
+              MediaRes.svgBackPattern,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomIconBtn(
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    subtitle ?? '',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontFamily: Fonts.poppins,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ...childs,
+                  const Spacer(),
+                  Align(
+                    child: CustomButton(
+                      width: context.width * 0.53,
+                      height: context.height * 0.067,
+                      onPressed: onPressed,
+                      child: buttonChild,
+                    ),
+                  )
+                ],
               ),
-              alignment: Alignment.topCenter,
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    CustomIconBtn(
-                      onPressed: ctmIconBtnPress,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      subtitle ?? '',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontFamily: Fonts.poppins,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ...childs,
-                  ],
-                ),
-                CustomButton(
-                  width: context.width * 0.53,
-                  height: context.height * 0.067,
-                  onPressed: onPressed,
-                  child: buttonChild,
-                )
-              ],
-            ),
-          ),
-        ),
+        ],
       ),
     );
   }

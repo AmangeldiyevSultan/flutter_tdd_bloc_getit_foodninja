@@ -16,7 +16,7 @@ class Colours {
 
   static const underLineColor = Color(0xff53E88B);
   static const snackBarColours = Color(0xff15BE77);
-  static const hintColour = Color(0xff3B3B3B);
+  static Color hintColour = const Color(0xff3B3B3B).withOpacity(0.4);
   static const textFieldBorderColour = Color(0xffF4F4F4);
   static const shadowColour = Color(0xffF4F4F4);
   static const arrowBackColour = Color(0xffDA6317);

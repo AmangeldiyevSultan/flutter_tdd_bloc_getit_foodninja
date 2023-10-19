@@ -13,56 +13,63 @@ class SignUpSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(30),
-          width: double.maxFinite,
-          height: double.maxFinite,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(MediaRes.background),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: CustomButton(
-                  child: const Text('Try Order'),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      DashBoard.routeName,
-                    );
-                  },
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Container(
+              padding: const EdgeInsets.all(30),
+              width: double.maxFinite,
+              height: double.maxFinite,
+              child: Stack(
+                alignment: AlignmentDirectional.center,
                 children: [
-                  SvgPicture.asset(MediaRes.svgSuccessLogo),
-                  const SizedBox(
-                    height: 20,
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: CustomButton(
+                      child: const Text('Try Order'),
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          DashBoard.routeName,
+                        );
+                      },
+                    ),
                   ),
-                  const Text(
-                    'Congrats!',
-                    style:
-                        TextStyle(color: Colours.underLineColor, fontSize: 30),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    'Your Profile Ready To Use!',
-                    style: TextStyle(fontSize: 23),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(MediaRes.svgSuccessLogo),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Congrats!',
+                        style: TextStyle(
+                          color: Colours.underLineColor,
+                          fontSize: 30,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Your Profile Ready To Use!',
+                        style: TextStyle(fontSize: 23),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+          SizedBox(
+            width: double.maxFinite,
+            child: SvgPicture.asset(
+              MediaRes.svgBackPattern,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+        ],
       ),
     );
   }

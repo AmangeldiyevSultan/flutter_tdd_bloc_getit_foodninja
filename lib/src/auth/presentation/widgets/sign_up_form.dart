@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/custom_text_field.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/typdef_extenstion.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SignUpForm extends StatelessWidget {
   const SignUpForm({
@@ -28,7 +29,13 @@ class SignUpForm extends StatelessWidget {
         children: [
           CustomTextField(
             textInputType: TextInputType.emailAddress,
-            iconPrefixSourceWidget: Image.asset(MediaRes.iconMessage),
+            iconPrefixSourceWidget: Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+              child: SvgPicture.asset(
+                MediaRes.svgMessageIcon,
+                height: 40,
+              ),
+            ),
             controller: emailController,
             hintText: 'Email',
             validator: (String? value) =>
@@ -38,7 +45,13 @@ class SignUpForm extends StatelessWidget {
             height: 15,
           ),
           CustomTextField(
-            iconPrefixSourceWidget: Image.asset(MediaRes.iconLock),
+            iconPrefixSourceWidget: Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+              child: SvgPicture.asset(
+                MediaRes.svgLockIcon,
+                height: 40,
+              ),
+            ),
             iconSuffixSource: MediaRes.iconShow,
             controller: passwordController,
             hintText: 'Password',
@@ -49,7 +62,13 @@ class SignUpForm extends StatelessWidget {
             height: 15,
           ),
           CustomTextField(
-            iconPrefixSourceWidget: Image.asset(MediaRes.iconLock),
+            iconPrefixSourceWidget: Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+              child: SvgPicture.asset(
+                MediaRes.svgLockIcon,
+                height: 40,
+              ),
+            ),
             iconSuffixSource: MediaRes.iconShow,
             controller: correctPasswordController,
             hintText: 'Confirm Password',

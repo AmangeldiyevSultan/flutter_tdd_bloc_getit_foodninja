@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CtmSclMediaButton extends StatelessWidget {
   const CtmSclMediaButton({
@@ -48,7 +49,7 @@ class CtmSclMediaButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Image.asset(image),
+            SvgPicture.asset(image),
             Text(
               text,
               style: const TextStyle(fontSize: 14, color: Colors.black),

@@ -7,13 +7,13 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/loading
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/bio_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_logo.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_template.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/sign_up_form.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard.dart';
 
@@ -64,80 +64,65 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(
-                      MediaRes.backgroundPdf,
-                    ),
-                    alignment: Alignment.topCenter,
-                  ),
+        return SignTemplate(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SignLogo(
+                  signText: 'Sign Up For Free',
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      const SignLogo(
-                        signText: 'Sign Up For Free',
-                      ),
-                      SizedBox(
-                        height: context.height * 0.02,
-                      ),
-                      SignUpForm(
-                        emailController: _emailController,
-                        passwordController: _passwordController,
-                        correctPasswordController: _correctPasswordController,
-                        formKey: _formKey,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      CustomButton(
-                        child: state is AuthLoading
-                            ? const Loading(
-                                width: 20,
-                                height: 20,
-                              )
-                            : const Text('Create Account'),
-                        onPressed: () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          FirebaseAuth.instance.currentUser?.reload();
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                                  SignUpEvent(
-                                    email: _emailController.text.trim(),
-                                    password: _passwordController.text.trim(),
-                                  ),
-                                );
-                          }
-                        },
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            SignInScreen.routeName,
+                SizedBox(
+                  height: context.height * 0.02,
+                ),
+                SignUpForm(
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                  correctPasswordController: _correctPasswordController,
+                  formKey: _formKey,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomButton(
+                  child: state is AuthLoading
+                      ? const Loading(
+                          width: 20,
+                          height: 20,
+                        )
+                      : const Text('Create Account'),
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    FirebaseAuth.instance.currentUser?.reload();
+                    if (_formKey.currentState!.validate()) {
+                      context.read<AuthBloc>().add(
+                            SignUpEvent(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            ),
                           );
-                        },
-                        child: const Text(
-                          'already have an account?',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            decorationColor: Colours.underLineColor,
-                            fontSize: 12,
-                            color: Colours.underLineColor,
-                            fontFamily: Fonts.viga,
-                          ),
-                        ),
-                      ),
-                    ],
+                    }
+                  },
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      SignInScreen.routeName,
+                    );
+                  },
+                  child: const Text(
+                    'already have an account?',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colours.underLineColor,
+                      fontSize: 12,
+                      color: Colours.underLineColor,
+                      fontFamily: Fonts.inter,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         );

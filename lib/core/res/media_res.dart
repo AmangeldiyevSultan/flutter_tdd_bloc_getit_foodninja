@@ -30,4 +30,15 @@ class MediaRes {
 
   static const svgPinLogo = '$_baseSvg/logo-pin.svg';
   static const svgSuccessLogo = '$_baseSvg/logo-success.svg';
+  static const svgIllustartion = '$_baseSvg/Illustartion.svg';
+  static const svgIllustartion_2 = '$_baseSvg/Illustration_2.svg';
+  static const svgBackPattern = '$_baseSvg/back_pattern.svg';
+  static const svgEmailIcon = '$_baseSvg/icon-email.svg';
+  static const svgGoogleIcon = '$_baseSvg/google-icon.svg';
+  static const svgFacebookIcon = '$_baseSvg/facebook-icon.svg';
+  static const svgLogoName = '$_baseSvg/logo-name.svg';
+  static const svgLogo = '$_baseSvg/logo.svg';
+  static const svgFoodNinjaName = '$_baseSvg/foodninja.svg';
+  static const svgMessageIcon = '$_baseSvg/message-icon.svg';
+  static const svgLockIcon = '$_baseSvg/lock-icon.svg';
 }
