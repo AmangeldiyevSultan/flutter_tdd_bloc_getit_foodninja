@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/views/nav_bar.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/custom_button.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SignUpSuccess extends StatelessWidget {
@@ -30,7 +30,7 @@ class SignUpSuccess extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushReplacementNamed(
                           context,
-                          DashBoard.routeName,
+                          NavBar.routeName,
                         );
                       },
                     ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/app/providers/user_provider.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/views/nav_bar.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/custom_button.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/loading_state.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
@@ -59,7 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           context.userProvider.user!.initialized ??
               Navigator.pushReplacementNamed(context, BioScreen.routeName);
           context.userProvider.user!.initialized!
-              ? Navigator.pushReplacementNamed(context, DashBoard.routeName)
+              ? Navigator.pushReplacementNamed(context, NavBar.routeName)
               : Navigator.pushReplacementNamed(context, BioScreen.routeName);
         }
       },

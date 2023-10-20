@@ -7,7 +7,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/datasources/a
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/entities/user.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/repo/auth_repo.dart';
 
-class AuthRepoImpl extends AuthRepo {
+class AuthRepoImpl implements AuthRepo {
   const AuthRepoImpl(this._remoteDataSource);
 
   final AuthRemoteDataSource _remoteDataSource;

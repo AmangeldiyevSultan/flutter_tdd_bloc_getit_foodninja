@@ -15,6 +15,12 @@ class CustomTextField extends StatefulWidget {
     this.label,
     this.floatingLabelStyle,
     this.prefixWidget,
+    this.isBorderShadow = true,
+    this.fillColor,
+    this.hintColor,
+    this.width,
+    this.height,
+    this.textColor,
     super.key,
   });
 
@@ -28,6 +34,12 @@ class CustomTextField extends StatefulWidget {
   final Widget? label;
   final TextStyle? floatingLabelStyle;
   final Widget? prefixWidget;
+  final bool? isBorderShadow;
+  final Color? fillColor;
+  final Color? hintColor;
+  final double? width;
+  final double? height;
+  final Color? textColor;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -43,15 +55,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: widget.width,
+      height: widget.height,
       decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(
-            color: Colours.textFieldBorderColour,
-            blurRadius: 15,
-            spreadRadius: 6,
-            offset: Offset(7, 15),
-          ),
-        ],
+        boxShadow: !widget.isBorderShadow!
+            ? null
+            : const [
+                BoxShadow(
+                  color: Colours.textFieldBorderColour,
+                  blurRadius: 15,
+                  spreadRadius: 6,
+                  offset: Offset(7, 15),
+                ),
+              ],
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
@@ -69,10 +85,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         onTapOutside: (_) {
           FocusScope.of(context).unfocus();
         },
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: Fonts.inter,
           fontWeight: FontWeight.normal,
           decoration: TextDecoration.none,
+          color: widget.textColor,
         ),
         controller: widget.controller,
         decoration: InputDecoration(
@@ -92,7 +109,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : null,
           filled: true,
-          fillColor: Colors.white,
+          fillColor: widget.fillColor ?? Colors.white,
           hintText: widget.hintText,
           contentPadding: EdgeInsets.symmetric(
             horizontal: context.width * 0.065,
@@ -101,8 +118,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintStyle: TextStyle(
             fontSize: 14,
             fontFamily: Fonts.inter,
-            fontWeight: FontWeight.w200,
-            color: Colours.hintColour,
+            fontWeight: FontWeight.w400,
+            color: widget.hintColor ?? Colours.hintColour,
           ),
           border: OutlineInputBorder(
             borderSide: const BorderSide(color: Colours.textFieldBorderColour),

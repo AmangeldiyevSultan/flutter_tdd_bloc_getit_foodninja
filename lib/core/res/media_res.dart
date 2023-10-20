@@ -28,17 +28,29 @@ class MediaRes {
   static const iconCamera = '$_baseIcons/icon-camera.jpg';
   static const iconGallery = '$_baseIcons/icon-gallery.jpg';
 
+  static const svgFacebookIcon = '$_baseSvg/facebook-icon.svg';
+  static const svgEmailIcon = '$_baseSvg/icon-email.svg';
+  static const svgGoogleIcon = '$_baseSvg/google-icon.svg';
+  static const svgMessageIcon = '$_baseSvg/message-icon.svg';
+  static const svgLockIcon = '$_baseSvg/lock-icon.svg';
+  static const svgChatIcon = '$_baseSvg/icon-chat.svg';
+  static const svgProfileIcon = '$_baseSvg/icon-profile.svg';
+  static const svgBuyIcon = '$_baseSvg/icon-buy.svg';
+  static const svgHomeIcon = '$_baseSvg/icon-home.svg';
+  static const svgIconWithNotification = '$_baseSvg/icon-with-notification.svg';
+  static const svgIconNoNotification = '$_baseSvg/icon-no-notification.svg';
+  static const svgIconSearch = '$_baseSvg/icon-search.svg';
+  static const svgIconClose = '$_baseSvg/icon-close.svg';
+  static const svgIconFilter = '$_baseSvg/icon-filter.svg';
+
   static const svgPinLogo = '$_baseSvg/logo-pin.svg';
   static const svgSuccessLogo = '$_baseSvg/logo-success.svg';
+  static const svgLogoName = '$_baseSvg/logo-name.svg';
+  static const svgLogo = '$_baseSvg/logo.svg';
+
   static const svgIllustartion = '$_baseSvg/Illustartion.svg';
   static const svgIllustartion_2 = '$_baseSvg/Illustration_2.svg';
   static const svgBackPattern = '$_baseSvg/back_pattern.svg';
-  static const svgEmailIcon = '$_baseSvg/icon-email.svg';
-  static const svgGoogleIcon = '$_baseSvg/google-icon.svg';
-  static const svgFacebookIcon = '$_baseSvg/facebook-icon.svg';
-  static const svgLogoName = '$_baseSvg/logo-name.svg';
-  static const svgLogo = '$_baseSvg/logo.svg';
+  static const svgBackNavPattern = '$_baseSvg/back-nav-pattern.svg';
   static const svgFoodNinjaName = '$_baseSvg/foodninja.svg';
-  static const svgMessageIcon = '$_baseSvg/message-icon.svg';
-  static const svgLockIcon = '$_baseSvg/lock-icon.svg';
 }

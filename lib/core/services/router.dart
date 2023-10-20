@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/views/loading_view.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/views/nav_bar.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/views/page_under_construction.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
@@ -44,7 +45,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (!snapshot.hasData || !snapshot.data!.exists) {
-                    return const SignInScreen(); // or some other fallback
+                    return const SignInScreen();
                   }
                   final localUser =
                       LocalUserModel.fromMap(snapshot.data!.data()!);
@@ -52,7 +53,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
                   context.userProvider.initUser(localUser);
 
                   if (context.userProvider.user!.initialized!) {
-                    return const DashBoard();
+                    return const NavBar();
                   } else {
                     return BlocProvider(
                       create: (_) => sl<AuthBloc>(),
@@ -88,6 +89,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         settings: settings,
       );
 
+    case NavBar.routeName:
+      return _pageBuilder(
+        (_) => const NavBar(),
+        settings: settings,
+      );
     case SignInScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
