@@ -11,7 +11,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/set_location.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/set_location_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/body_template.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -42,7 +42,7 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
         if (state is AuthError) {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is UserUpdated) {
-          Navigator.pushNamed(context, SetLocation.routeName);
+          Navigator.pushNamed(context, SetLocationScreen.routeName);
         }
       },
       builder: (context, state) {

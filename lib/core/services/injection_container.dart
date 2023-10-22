@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/repos/auth_repo_impl.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/repo/auth_repo.dart';
@@ -13,6 +12,12 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/s
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/sign_up.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/use_cases/update_user.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/datasources/rest_remote_data_source.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/repos/rest_repo_impl.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/repo/rest_repo.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/use_cases/create_restaurant.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/use_cases/fetch_restaurants.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/datasource/on_boarding_local_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/repos/on_boarding_repo_impl.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/domain/repos/on_boarding_repo.dart';

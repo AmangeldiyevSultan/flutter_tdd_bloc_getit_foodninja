@@ -4,12 +4,12 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/loading
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_success.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_success_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/body_template.dart';
 import 'package:flutter_svg/svg.dart';
 
-class SetLocation extends StatelessWidget {
-  const SetLocation({super.key});
+class SetLocationScreen extends StatelessWidget {
+  const SetLocationScreen({super.key});
   static const String routeName = '/set-location';
 
   @override
@@ -24,7 +24,7 @@ class SetLocation extends StatelessWidget {
           onPressed: () {
             Navigator.restorablePushNamedAndRemoveUntil(
               context,
-              SignUpSuccess.routeName,
+              SignUpSuccessScreen.routeName,
               (route) => false,
             );
           },

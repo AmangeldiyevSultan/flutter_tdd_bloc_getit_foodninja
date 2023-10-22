@@ -7,16 +7,16 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class DashBoard extends StatefulWidget {
-  const DashBoard({super.key});
+class DashBoardScreen extends StatefulWidget {
+  const DashBoardScreen({super.key});
 
   static const routeName = '/dashboard';
 
   @override
-  State<DashBoard> createState() => _DashBoardState();
+  State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
 
-class _DashBoardState extends State<DashBoard> {
+class _DashBoardScreenState extends State<DashBoardScreen> {
   final _searchController = TextEditingController();
 
   @override
@@ -131,19 +131,33 @@ class _DashBoardState extends State<DashBoard> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.network(
-                                FirebaseAuth.instance.currentUser!.photoURL!,
+                              Container(
+                                width: context.width * 0.3,
+                                height: context.height * 0.15,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                ),
+                                child: Image.network(
+                                  FirebaseAuth.instance.currentUser!.photoURL!,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               const SizedBox(
                                 height: 15,
                               ),
-                              const Text('Vegan Resto'),
+                              const Text(
+                                'Vegan Resto',
+                                style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                               const SizedBox(
                                 height: 5,
                               ),
                               const Text(
-                                '12 mins',
+                                '12 min',
                                 style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
                                   fontFamily: Fonts.viga,
                                   fontWeight: FontWeight.w100,
                                 ),

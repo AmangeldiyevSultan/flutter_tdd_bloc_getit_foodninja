@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/app/providers/user_provider.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/create_restaurant_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NavBar extends StatefulWidget {
@@ -24,18 +27,90 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
+  final List<Widget> _pageAdmin = [
+    const CreateRestaurantScreen(),
+    const CreateRestaurantScreen(),
+  ];
+
   final List<Widget> _page = [
-    const DashBoard(),
-    const DashBoard(),
-    const DashBoard(),
-    const DashBoard(),
+    const DashBoardScreen(),
+    const DashBoardScreen(),
+    const DashBoardScreen(),
+    const DashBoardScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final userStatus = context.read<UserProvider>().user;
+
+    final items = <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        backgroundColor: Colors.white,
+        icon: _navItem(
+          0,
+          MediaRes.svgHomeIcon,
+          'Home',
+          _page.length,
+        ),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: _navItem(
+          1,
+          MediaRes.svgProfileIcon,
+          'Profile',
+          _page.length,
+        ),
+        label: 'Profle',
+      ),
+      BottomNavigationBarItem(
+        icon: _navItem(
+          2,
+          MediaRes.svgBuyIcon,
+          'Buy',
+          _page.length,
+        ),
+        label: 'Buy',
+      ),
+      BottomNavigationBarItem(
+        icon: _navItem(
+          3,
+          MediaRes.svgChatIcon,
+          'Chat',
+          _page.length,
+        ),
+        label: 'Chat',
+      ),
+    ];
+
+    final itemsAdmin = <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        backgroundColor: Colors.white,
+        icon: _navItem(
+          0,
+          MediaRes.svgHomeIcon,
+          'Home',
+          _pageAdmin.length,
+        ),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        backgroundColor: Colors.white,
+        icon: _navItem(
+          1,
+          MediaRes.svgProfileIcon,
+          'Profile',
+          _pageAdmin.length,
+        ),
+        label: 'Profile',
+      ),
+    ];
+
     return Scaffold(
       backgroundColor: Colours.backgroundColour,
-      body: _page[_selectedIndex],
+      body: userStatus?.status == 'admin'
+          ? _pageAdmin[_selectedIndex]
+          : _page[_selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -59,41 +134,7 @@ class _NavBarState extends State<NavBar> {
             elevation: 10,
             showSelectedLabels: false,
             showUnselectedLabels: false,
-            items: [
-              BottomNavigationBarItem(
-                backgroundColor: Colors.white,
-                icon: _navItem(
-                  0,
-                  MediaRes.svgHomeIcon,
-                  'Home',
-                ),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: _navItem(
-                  1,
-                  MediaRes.svgProfileIcon,
-                  'Profile',
-                ),
-                label: 'Profle',
-              ),
-              BottomNavigationBarItem(
-                icon: _navItem(
-                  2,
-                  MediaRes.svgBuyIcon,
-                  'Buy',
-                ),
-                label: 'Buy',
-              ),
-              BottomNavigationBarItem(
-                icon: _navItem(
-                  3,
-                  MediaRes.svgChatIcon,
-                  'Chat',
-                ),
-                label: 'Chat',
-              ),
-            ],
+            items: userStatus?.status == 'admin' ? itemsAdmin : items,
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.greenAccent,
             onTap: _onItemTapped,
@@ -103,41 +144,54 @@ class _NavBarState extends State<NavBar> {
     );
   }
 
-  Widget _navItem(int selectedIndex, String svgIcon, String label) {
-    return Container(
-      margin: selectedIndex == 0
-          ? const EdgeInsets.only(left: 10)
-          : selectedIndex == 3
-              ? const EdgeInsets.only(right: 10)
-              : null,
-      height: context.height * 0.07,
-      decoration: _selectedIndex == selectedIndex
-          ? BoxDecoration(
-              gradient: Colours.gradientNavBar,
-              borderRadius: BorderRadius.circular(14),
-            )
-          : null,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SvgPicture.asset(
-            svgIcon,
-            colorFilter: _selectedIndex != selectedIndex
-                ? ColorFilter.mode(
-                    Colours.underLineColor.withOpacity(0.5),
-                    BlendMode.modulate,
-                  )
+  Widget _navItem(
+    int selectedIndex,
+    String svgIcon,
+    String label,
+    int pageLength,
+  ) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      constraints: BoxConstraints(
+        maxWidth: _selectedIndex == selectedIndex
+            ? context.width * 1 / _pageAdmin.length
+            : context.width * 0.5 / _pageAdmin.length,
+      ),
+      child: Container(
+        margin: selectedIndex == 0
+            ? const EdgeInsets.only(left: 10)
+            : selectedIndex == 3
+                ? const EdgeInsets.only(right: 10)
                 : null,
-          ),
-          if (_selectedIndex == selectedIndex) ...[
-            Text(
-              label,
-              style: const TextStyle(
-                fontFamily: Fonts.inter,
-              ),
+        height: context.height * 0.07,
+        decoration: _selectedIndex == selectedIndex
+            ? BoxDecoration(
+                gradient: Colours.gradientNavBar,
+                borderRadius: BorderRadius.circular(14),
+              )
+            : null,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SvgPicture.asset(
+              svgIcon,
+              colorFilter: _selectedIndex != selectedIndex
+                  ? ColorFilter.mode(
+                      Colours.underLineColor.withOpacity(0.5),
+                      BlendMode.modulate,
+                    )
+                  : null,
             ),
-          ]
-        ],
+            if (_selectedIndex == selectedIndex) ...[
+              Text(
+                label,
+                style: const TextStyle(
+                  fontFamily: Fonts.inter,
+                ),
+              ),
+            ]
+          ],
+        ),
       ),
     );
   }

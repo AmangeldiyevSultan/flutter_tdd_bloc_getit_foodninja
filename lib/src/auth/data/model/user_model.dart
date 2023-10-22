@@ -5,6 +5,7 @@ class LocalUserModel extends LocalUser {
   const LocalUserModel({
     required super.uid,
     required super.email,
+    required super.status,
     super.profilePic,
     super.firstName,
     super.lastName,
@@ -16,6 +17,7 @@ class LocalUserModel extends LocalUser {
       : this(
           uid: '',
           email: '',
+          status: '',
           profilePic: '',
           firstName: '',
           lastName: '',
@@ -27,6 +29,7 @@ class LocalUserModel extends LocalUser {
       : this(
           uid: map['uid'] as String,
           email: map['email'] as String,
+          status: map['status'] as String,
           profilePic: map['profilePic'] as String,
           firstName: map['firstName'] as String,
           lastName: map['lastName'] as String,
@@ -40,6 +43,7 @@ class LocalUserModel extends LocalUser {
     return {
       'uid': uid,
       'email': email,
+      'status': status,
       'profilePic': profilePic,
       'firstName': firstName,
       'lastName': lastName,
@@ -52,6 +56,7 @@ class LocalUserModel extends LocalUser {
     String? uid,
     String? email,
     String? profilePic,
+    String? status,
     String? firstName,
     String? lastName,
     String? phoneNumber,
@@ -60,6 +65,7 @@ class LocalUserModel extends LocalUser {
     return LocalUserModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,
+      status: status ?? this.status,
       profilePic: profilePic ?? this.profilePic,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,

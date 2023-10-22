@@ -11,17 +11,11 @@ class SignLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          height: 190,
-          width: 200,
-          child: SvgPicture.asset(
-            MediaRes.svgLogo,
-            allowDrawingOutsideViewBox: true,
-          ),
-        ),
         SvgPicture.asset(
-          MediaRes.svgFoodNinjaName,
+          MediaRes.svgLogoName,
+          fit: BoxFit.fitHeight,
         ),
         const SizedBox(
           height: 50,

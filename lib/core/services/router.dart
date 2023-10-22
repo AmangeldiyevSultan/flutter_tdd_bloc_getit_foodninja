@@ -12,12 +12,12 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_mo
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/bio_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/forgot_password_screen.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/set_location.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/set_location_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_screen.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_success.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_success_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/upload_photo_screen.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/datasource/on_boarding_local_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/views/on_boarding_screen.dart';
@@ -110,17 +110,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-    case SetLocation.routeName:
+    case SetLocationScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
           create: (_) => sl<AuthBloc>(),
-          child: const SetLocation(),
+          child: const SetLocationScreen(),
         ),
         settings: settings,
       );
-    case SignUpSuccess.routeName:
+    case SignUpSuccessScreen.routeName:
       return _pageBuilder(
-        (_) => const SignUpSuccess(),
+        (_) => const SignUpSuccessScreen(),
         settings: settings,
       );
     case SignUpScreen.routeName:
@@ -148,9 +148,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-    case DashBoard.routeName:
+    case DashBoardScreen.routeName:
       return _pageBuilder(
-        (_) => const DashBoard(),
+        (_) => const DashBoardScreen(),
         settings: settings,
       );
     default:

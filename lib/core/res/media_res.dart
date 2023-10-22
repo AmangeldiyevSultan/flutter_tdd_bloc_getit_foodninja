@@ -7,8 +7,6 @@ class MediaRes {
   static const _baseIcons = 'assets/icons';
   static const _baseSvg = 'assets/svg_img';
 
-  static const background = '$_baseImages/background.png';
-  static const backgroundPdf = '$_baseImages/background-pdf.png';
   static const backgroundPdf2 = '$_baseImages/background2-pdf.png';
   static const logo = '$_baseImages/logo-img.png';
 
@@ -36,7 +34,7 @@ class MediaRes {
   static const svgChatIcon = '$_baseSvg/icon-chat.svg';
   static const svgProfileIcon = '$_baseSvg/icon-profile.svg';
   static const svgBuyIcon = '$_baseSvg/icon-buy.svg';
-  static const svgHomeIcon = '$_baseSvg/icon-home.svg';
+  static const svgHomeIcon = '$_baseSvg/icon-home-off.svg';
   static const svgIconWithNotification = '$_baseSvg/icon-with-notification.svg';
   static const svgIconNoNotification = '$_baseSvg/icon-no-notification.svg';
   static const svgIconSearch = '$_baseSvg/icon-search.svg';
@@ -46,11 +44,9 @@ class MediaRes {
   static const svgPinLogo = '$_baseSvg/logo-pin.svg';
   static const svgSuccessLogo = '$_baseSvg/logo-success.svg';
   static const svgLogoName = '$_baseSvg/logo-name.svg';
-  static const svgLogo = '$_baseSvg/logo.svg';
 
   static const svgIllustartion = '$_baseSvg/Illustartion.svg';
   static const svgIllustartion_2 = '$_baseSvg/Illustration_2.svg';
   static const svgBackPattern = '$_baseSvg/back_pattern.svg';
   static const svgBackNavPattern = '$_baseSvg/back-nav-pattern.svg';
-  static const svgFoodNinjaName = '$_baseSvg/foodninja.svg';
 }

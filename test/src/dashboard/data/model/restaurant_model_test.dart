@@ -31,7 +31,7 @@ void main() {
     });
 
     test('should throw an [Error] when the map os invalid', () {
-      final map = DataMap.from(tMap)..remove('uid');
+      final map = DataMap.from(tMap)..remove('name');
 
       const call = RestaurantModel.fromMap;
 
@@ -49,9 +49,9 @@ void main() {
 
   group('copyWith', () {
     test('should return a valid [RestaurantModel] with updated values', () {
-      final result = tRestaurantModel.copyWith(uid: '2');
+      final result = tRestaurantModel.copyWith(name: '2');
 
-      expect(result.uid, '2');
+      expect(result.name, '2');
     });
   });
 }

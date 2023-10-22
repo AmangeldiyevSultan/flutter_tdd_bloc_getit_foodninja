@@ -4,6 +4,7 @@ class LocalUser extends Equatable {
   const LocalUser({
     required this.uid,
     required this.email,
+    required this.status,
     this.profilePic,
     this.firstName,
     this.lastName,
@@ -15,6 +16,7 @@ class LocalUser extends Equatable {
       : this(
           uid: '',
           email: '',
+          status: '',
           profilePic: '',
           firstName: '',
           lastName: '',
@@ -27,6 +29,7 @@ class LocalUser extends Equatable {
   final String? profilePic;
   final String? firstName;
   final String? lastName;
+  final String status;
   final String? phoneNumber;
   final bool? initialized;
 

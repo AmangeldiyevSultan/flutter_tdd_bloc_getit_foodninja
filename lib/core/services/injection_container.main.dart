@@ -5,6 +5,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   await _initOnBoarding();
   await _initAuth();
+  await _initRestaurants();
 }
 
 Future<void> _initOnBoarding() async {
@@ -64,6 +65,23 @@ Future<void> _initAuth() async {
       () => FirebaseFirestore.instance,
     )
     ..registerLazySingleton(() => FirebaseStorage.instance)
-    ..registerLazySingleton(GoogleSignIn.new)
-    ..registerLazySingleton(() => FacebookAuth.instance);
+    ..registerLazySingleton(GoogleSignIn.new);
+}
+
+Future<void> _initRestaurants() async {
+  sl
+    ..registerFactory(
+      () => DashboardBloc(
+        createRestaurant: sl(),
+        fetchRestaurants: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => CreateRestaurant(sl()))
+    ..registerLazySingleton(() => FetchRestaurants(sl()))
+    ..registerLazySingleton<RestaurantRepo>(() => RestaurantRepoImpl(sl()))
+    ..registerLazySingleton<RestRemoteDataSource>(
+      () => RestRemoteDataSourceImpl(
+        cloudStoreClient: sl(),
+      ),
+    );
 }
