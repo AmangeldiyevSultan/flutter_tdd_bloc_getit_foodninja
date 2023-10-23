@@ -48,7 +48,7 @@ class _NavBarState extends State<NavBar> {
         backgroundColor: Colors.white,
         icon: _navItem(
           0,
-          MediaRes.svgHomeIcon,
+          MediaRes.svgIconHome,
           'Home',
           _page.length,
         ),
@@ -57,7 +57,7 @@ class _NavBarState extends State<NavBar> {
       BottomNavigationBarItem(
         icon: _navItem(
           1,
-          MediaRes.svgProfileIcon,
+          MediaRes.svgIconProfile,
           'Profile',
           _page.length,
         ),
@@ -66,7 +66,7 @@ class _NavBarState extends State<NavBar> {
       BottomNavigationBarItem(
         icon: _navItem(
           2,
-          MediaRes.svgBuyIcon,
+          MediaRes.svgIconBuy,
           'Buy',
           _page.length,
         ),
@@ -75,7 +75,7 @@ class _NavBarState extends State<NavBar> {
       BottomNavigationBarItem(
         icon: _navItem(
           3,
-          MediaRes.svgChatIcon,
+          MediaRes.svgIconChat,
           'Chat',
           _page.length,
         ),
@@ -88,7 +88,7 @@ class _NavBarState extends State<NavBar> {
         backgroundColor: Colors.white,
         icon: _navItem(
           0,
-          MediaRes.svgHomeIcon,
+          MediaRes.svgIconHome,
           'Home',
           _pageAdmin.length,
         ),
@@ -98,7 +98,7 @@ class _NavBarState extends State<NavBar> {
         backgroundColor: Colors.white,
         icon: _navItem(
           1,
-          MediaRes.svgProfileIcon,
+          MediaRes.svgIconProfile,
           'Profile',
           _pageAdmin.length,
         ),

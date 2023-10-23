@@ -72,7 +72,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 iconPrefixSourceWidget: Padding(
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   child: SvgPicture.asset(
-                    MediaRes.svgEmailIcon,
+                    MediaRes.svgIconEmail,
                   ),
                 ),
                 controller: _emailController,

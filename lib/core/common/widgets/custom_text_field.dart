@@ -8,11 +8,12 @@ class CustomTextField extends StatefulWidget {
     required this.controller,
     required this.hintText,
     this.iconPrefixSourceWidget,
-    this.iconSuffixSource,
+    this.iconSuffixSourceWidget,
     this.textInputType,
     this.validator,
     this.overrideValidator = false,
     this.label,
+    this.onChange,
     this.floatingLabelStyle,
     this.prefixWidget,
     this.isBorderShadow = true,
@@ -21,15 +22,17 @@ class CustomTextField extends StatefulWidget {
     this.width,
     this.height,
     this.textColor,
+    this.obscureText,
     super.key,
   });
 
   final TextEditingController controller;
   final String hintText;
   final Widget? iconPrefixSourceWidget;
-  final String? iconSuffixSource;
+  final Widget? iconSuffixSourceWidget;
   final TextInputType? textInputType;
   final String? Function(String?)? validator;
+  final String? Function(String)? onChange;
   final bool overrideValidator;
   final Widget? label;
   final TextStyle? floatingLabelStyle;
@@ -40,18 +43,13 @@ class CustomTextField extends StatefulWidget {
   final double? width;
   final double? height;
   final Color? textColor;
+  final bool? obscureText;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  bool obscureText = false;
-  void _obscureTextButton() {
-    obscureText = !obscureText;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,6 +69,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
+        onChanged: widget.onChange,
         validator: widget.overrideValidator
             ? widget.validator
             : (value) {
@@ -81,7 +80,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 return widget.validator?.call(value);
               },
         keyboardType: widget.textInputType,
-        obscureText: obscureText,
+        obscureText: widget.obscureText ?? false,
         onTapOutside: (_) {
           FocusScope.of(context).unfocus();
         },
@@ -97,17 +96,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           floatingLabelStyle: widget.floatingLabelStyle,
           label: widget.label,
           prefixIcon: widget.iconPrefixSourceWidget,
-          suffixIcon: widget.iconSuffixSource != null
-              ? IconButton(
-                  onPressed: _obscureTextButton,
-                  icon: Icon(
-                    obscureText
-                        ? Icons.visibility_off_sharp
-                        : Icons.visibility_sharp,
-                    color: Colors.grey,
-                  ),
-                )
-              : null,
+          suffixIcon: widget.iconSuffixSourceWidget,
           filled: true,
           fillColor: widget.fillColor ?? Colors.white,
           hintText: widget.hintText,

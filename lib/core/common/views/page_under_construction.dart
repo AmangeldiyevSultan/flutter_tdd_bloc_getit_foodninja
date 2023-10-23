@@ -11,10 +11,10 @@ class PageUnderConstruction extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          SvgPicture.asset(MediaRes.svgBackPattern),
+          SvgPicture.asset(MediaRes.svgImageBackPattern),
           SafeArea(
             child: Center(
-              child: Lottie.asset(MediaRes.underContruction),
+              child: Lottie.asset(MediaRes.lottieUnderContruction),
             ),
           ),
         ],

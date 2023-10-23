@@ -17,7 +17,7 @@ class PageContent extends Equatable {
 
   const PageContent.first()
       : this(
-          image: MediaRes.svgIllustartion,
+          image: MediaRes.svgVectorIllustartionFirst,
           title: 'Find your Comfort\nFood here',
           description: 'Here You Can find a chef or dish for every\n'
               'taste and color. Enjoy!',
@@ -26,7 +26,7 @@ class PageContent extends Equatable {
 
   const PageContent.second()
       : this(
-          image: MediaRes.svgIllustartion_2,
+          image: MediaRes.svgVectorIllustartionSecond,
           title: 'Food Ninja is Where Your\n'
               'Comfort Food Lives',
           description: 'Enjoy a fast and good food delivery at\n'

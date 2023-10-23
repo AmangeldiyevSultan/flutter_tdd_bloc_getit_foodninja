@@ -33,7 +33,7 @@ class BodyTemplate extends StatelessWidget {
           SizedBox(
             width: double.maxFinite,
             child: SvgPicture.asset(
-              MediaRes.svgBackPattern,
+              MediaRes.svgImageBackPattern,
               fit: BoxFit.fitWidth,
             ),
           ),

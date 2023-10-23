@@ -47,7 +47,7 @@ class _CreateRestaurantScreenState extends State<CreateRestaurantScreen> {
       body: Stack(
         children: [
           SvgPicture.asset(
-            MediaRes.svgBackNavPattern,
+            MediaRes.svgImageBackNavPattern,
             width: context.width,
           ),
           SafeArea(

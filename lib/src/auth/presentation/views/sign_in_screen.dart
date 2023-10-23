@@ -97,7 +97,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CtmSclMediaButton(
-                      image: MediaRes.svgFacebookIcon,
+                      image: MediaRes.svgIconFacebook,
                       text: 'Facebook',
                       callback: () {
                         FocusManager.instance.primaryFocus?.unfocus();
@@ -108,7 +108,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                     ),
                     CtmSclMediaButton(
-                      image: MediaRes.svgGoogleIcon,
+                      image: MediaRes.svgIconGoogle,
                       text: 'Google',
                       callback: () {
                         FocusManager.instance.primaryFocus?.unfocus();

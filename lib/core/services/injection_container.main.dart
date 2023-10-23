@@ -65,7 +65,8 @@ Future<void> _initAuth() async {
       () => FirebaseFirestore.instance,
     )
     ..registerLazySingleton(() => FirebaseStorage.instance)
-    ..registerLazySingleton(GoogleSignIn.new);
+    ..registerLazySingleton(GoogleSignIn.new)
+    ..registerLazySingleton(() => FacebookAuth.instance);
 }
 
 Future<void> _initRestaurants() async {
@@ -77,17 +78,22 @@ Future<void> _initRestaurants() async {
       ),
     )
     ..registerFactory(() => LocationBloc(geoLocation: sl()))
+    ..registerFactory(() => AutocompleteBloc(getAutocomplete: sl()))
     ..registerLazySingleton(() => CreateRestaurant(sl()))
     ..registerLazySingleton(() => FetchRestaurants(sl()))
-    ..registerLazySingleton(() => GetGeoLocation(sl()))
+    ..registerLazySingleton(() => GetLocation(sl()))
+    ..registerLazySingleton(() => GetAutocomplete(sl()))
     ..registerLazySingleton<RestaurantRepo>(() => RestaurantRepoImpl(sl()))
-    ..registerLazySingleton<GeoLocationRepo>(() => GeoLocationRepoImpl(sl()))
+    ..registerLazySingleton<LocationRepo>(() => LocationRepoImpl(sl()))
     ..registerLazySingleton<RestRemoteDataSource>(
       () => RestRemoteDataSourceImpl(
         cloudStoreClient: sl(),
       ),
     )
-    ..registerLazySingleton<GeoLocationRemoteDataSource>(
-      () => const GeoLocationRemoteDataSourceImpl(),
+    ..registerLazySingleton<LocationRemoteDataSource>(
+      () => LocationRemoteDataSourceImpl(client: sl()),
+    )
+    ..registerLazySingleton(
+      http.Client.new,
     );
 }

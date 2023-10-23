@@ -38,7 +38,7 @@ class SignUpSuccessScreen extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(MediaRes.svgSuccessLogo),
+                      SvgPicture.asset(MediaRes.svgLogoSuccess),
                       const SizedBox(
                         height: 20,
                       ),
@@ -65,7 +65,7 @@ class SignUpSuccessScreen extends StatelessWidget {
           SizedBox(
             width: double.maxFinite,
             child: SvgPicture.asset(
-              MediaRes.svgBackPattern,
+              MediaRes.svgImageBackPattern,
               fit: BoxFit.fitWidth,
             ),
           ),
