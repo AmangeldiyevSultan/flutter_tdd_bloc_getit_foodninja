@@ -76,12 +76,18 @@ Future<void> _initRestaurants() async {
         fetchRestaurants: sl(),
       ),
     )
+    ..registerFactory(() => LocationBloc(geoLocation: sl()))
     ..registerLazySingleton(() => CreateRestaurant(sl()))
     ..registerLazySingleton(() => FetchRestaurants(sl()))
+    ..registerLazySingleton(() => GetGeoLocation(sl()))
     ..registerLazySingleton<RestaurantRepo>(() => RestaurantRepoImpl(sl()))
+    ..registerLazySingleton<GeoLocationRepo>(() => GeoLocationRepoImpl(sl()))
     ..registerLazySingleton<RestRemoteDataSource>(
       () => RestRemoteDataSourceImpl(
         cloudStoreClient: sl(),
       ),
+    )
+    ..registerLazySingleton<GeoLocationRemoteDataSource>(
+      () => const GeoLocationRemoteDataSourceImpl(),
     );
 }

@@ -17,7 +17,9 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_success_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/upload_photo_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/bloc/location/location_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/set_location_map_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/datasource/on_boarding_local_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/views/on_boarding_screen.dart';
@@ -92,6 +94,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case NavBar.routeName:
       return _pageBuilder(
         (_) => const NavBar(),
+        settings: settings,
+      );
+    case SetLocationMapScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<LocationBloc>()..add(const LoadMapEvent()),
+          child: const SetLocationMapScreen(),
+        ),
         settings: settings,
       );
     case SignInScreen.routeName:
