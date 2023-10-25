@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/app/providers/user_provider.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/exports/blocs.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/services/injection_container.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/create_restaurant_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,7 +30,10 @@ class _NavBarState extends State<NavBar> {
   }
 
   final List<Widget> _pageAdmin = [
-    const CreateRestaurantScreen(),
+    BlocProvider(
+      create: (_) => sl<DashboardBloc>(),
+      child: const CreateRestaurantScreen(),
+    ),
     const CreateRestaurantScreen(),
   ];
 

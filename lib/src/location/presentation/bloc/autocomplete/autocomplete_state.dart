@@ -11,6 +11,15 @@ final class AutocompleteInitial extends AutocompleteState {}
 
 class AutocompleteLoading extends AutocompleteState {}
 
+class AutocompleteCleared extends AutocompleteState {
+  const AutocompleteCleared({required this.autocomplete});
+
+  final List<PlaceAutocomplete> autocomplete;
+
+  @override
+  List<Object> get props => [autocomplete];
+}
+
 class AutocompleteLoaded extends AutocompleteState {
   const AutocompleteLoaded({required this.autocomplete});
 

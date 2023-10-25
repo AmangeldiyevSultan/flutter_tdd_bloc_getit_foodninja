@@ -18,7 +18,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_success_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/upload_photo_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard_screen.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/set_location_map_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/presentation/views/set_location_map_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/data/datasource/on_boarding_local_data_source.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/on_boarding/presentation/views/on_boarding_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';

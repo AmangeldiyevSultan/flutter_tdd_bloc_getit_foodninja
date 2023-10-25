@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/exceptions.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/constants.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/model/place_authcomplete_model.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/model/place_model.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/data/models/place_authcomplete_model.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/data/models/place_model.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 abstract class LocationRemoteDataSource {
@@ -17,6 +18,8 @@ abstract class LocationRemoteDataSource {
   Future<List<PlaceAutocompleteModel>> getAutocomplete(String searchInput);
 
   Future<PlaceModel> getPlace(String placeId);
+
+  Future<PlaceModel> getPlaceByLatLng(LatLng latLng);
 }
 
 class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
@@ -55,8 +58,7 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
   ) async {
     try {
       final url =
-          '${Constants.kBaseUrl}/${Constants.kAutocompleteJsonUrl}?input=$searchInput&types=${Constants.kMapTypes}&key=${Constants.kMapApiKey}';
-
+          '${Constants.kBaseUrl}/${Constants.kAutocompleteJsonUrl}?input=$searchInput&components=country:kz&types=${Constants.kMapTypes}&key=${Constants.kMapApiKey}';
       final response = await _client.get(Uri.parse(url));
 
       final map = convert.jsonDecode(response.body) as DataMap;
@@ -76,12 +78,36 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
 
   @override
   Future<PlaceModel> getPlace(String placeId) async {
-    final url =
-        '${Constants.kBaseUrl}/${Constants.kPlaceDetailsJsonUrl}?place_id=$placeId&key=${Constants.kMapApiKey}';
+    try {
+      final url =
+          '${Constants.kBaseUrl}/${Constants.kPlaceDetailsJsonUrl}?place_id=$placeId&key=${Constants.kMapApiKey}';
+      final response = await http.get(Uri.parse(url));
+      final json = convert.jsonDecode(response.body) as DataMap;
+      final results = json['result'] as DataMap;
 
-    final response = await http.get(Uri.parse(url));
-    final json = convert.jsonDecode(response.body) as DataMap;
-    final results = json['result'] as DataMap;
-    return PlaceModel.fromMap(results);
+      return PlaceModel.fromMap(results);
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<PlaceModel> getPlaceByLatLng(LatLng latLng) async {
+    try {
+      final url =
+          '${Constants.kBaseUrl}/${Constants.kGeocodeJsonUrl}?latlng=${latLng.latitude},${latLng.longitude}&key=${Constants.kMapApiKey}';
+      final response = await _client.get(Uri.parse(url));
+
+      final map = convert.jsonDecode(response.body) as DataMap;
+
+      final results = map['results'] as List;
+      final resultsFirst = results[0] as DataMap;
+
+      return PlaceModel.fromMap(resultsFirst);
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
   }
 }

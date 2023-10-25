@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/entities/location.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/use_cases/create_restaurant.dart';
@@ -25,7 +27,7 @@ void main() {
     when(
       () => repo.createRestaurant(
         name: tName,
-        image: tImage,
+        image: File(tImage),
         location: tLocation,
         description: tDescription,
       ),
@@ -33,10 +35,10 @@ void main() {
 
     //Act
     final result = await usecase(
-      const CreateRestaurantPararms(
+      CreateRestaurantPararms(
         name: tName,
         decoration: tDescription,
-        image: tImage,
+        image: File(tImage),
         location: tLocation,
       ),
     );

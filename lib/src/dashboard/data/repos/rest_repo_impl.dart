@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/exceptions.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/failures.dart';
@@ -15,7 +17,7 @@ class RestaurantRepoImpl implements RestaurantRepo {
   @override
   ResultFuture<void> createRestaurant({
     required String name,
-    required String image,
+    required File image,
     required RestLocation location,
     required String description,
   }) async {

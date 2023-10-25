@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/entities/place_autocomplete.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/use_cases/get_autocomplete.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/domain/entities/place_autocomplete.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/domain/use_cases/get_autocomplete.dart';
 
 part 'autocomplete_event.dart';
 part 'autocomplete_state.dart';
@@ -36,6 +36,6 @@ class AutocompleteBloc extends Bloc<AutocompleteEvent, AutocompleteState> {
     ClearAutocompleteEvent event,
     Emitter<AutocompleteState> emit,
   ) async {
-    emit(AutocompleteLoaded(autocomplete: List.empty()));
+    emit(AutocompleteCleared(autocomplete: List.empty()));
   }
 }

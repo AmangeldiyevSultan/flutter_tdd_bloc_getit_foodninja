@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/views/loading_view.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/bloc/autocomplete/autocomplete_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/presentation/bloc/autocomplete/autocomplete_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/presentation/bloc/location/location_bloc.dart';
 
 class SearchBoxSuggestions extends StatelessWidget {
   const SearchBoxSuggestions({
@@ -28,7 +29,16 @@ class SearchBoxSuggestions extends StatelessWidget {
                   title: Text(
                     state.autocomplete[index].description,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    context.read<LocationBloc>().add(
+                          SearchLocationEvent(
+                            placeId: state.autocomplete[index].placeId,
+                          ),
+                        );
+                    context.read<AutocompleteBloc>().add(
+                          ClearAutocompleteEvent(),
+                        );
+                  },
                 ),
               );
             },

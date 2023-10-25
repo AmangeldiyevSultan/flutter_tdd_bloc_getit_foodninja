@@ -4,7 +4,7 @@ sealed class LocationEvent extends Equatable {
   const LocationEvent();
 
   @override
-  List<Object> get props => [];
+  List<dynamic> get props => [];
 }
 
 class LoadMapEvent extends LocationEvent {
@@ -13,7 +13,16 @@ class LoadMapEvent extends LocationEvent {
   final GoogleMapController? controller;
 
   @override
-  List<Object> get props => [controller!];
+  List<Object?> get props => [controller];
+}
+
+class LatLngMapEvent extends LocationEvent {
+  const LatLngMapEvent({this.latLng});
+
+  final LatLng? latLng;
+
+  @override
+  List<Object?> get props => [latLng];
 }
 
 class SearchLocationEvent extends LocationEvent {

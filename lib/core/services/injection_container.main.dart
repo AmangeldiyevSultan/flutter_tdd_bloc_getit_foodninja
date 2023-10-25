@@ -6,6 +6,7 @@ Future<void> init() async {
   await _initOnBoarding();
   await _initAuth();
   await _initRestaurants();
+  await _initLocation();
 }
 
 Future<void> _initOnBoarding() async {
@@ -69,6 +70,29 @@ Future<void> _initAuth() async {
     ..registerLazySingleton(() => FacebookAuth.instance);
 }
 
+Future<void> _initLocation() async {
+  sl
+    ..registerFactory(
+      () => LocationBloc(
+        geoLocation: sl(),
+        getPlace: sl(),
+        getPlaceByLatLng: sl(),
+      ),
+    )
+    ..registerFactory(() => AutocompleteBloc(getAutocomplete: sl()))
+    ..registerLazySingleton(() => GetPlaceByLatLng(sl()))
+    ..registerLazySingleton(() => GetLocation(sl()))
+    ..registerLazySingleton(() => GetPlace(sl()))
+    ..registerLazySingleton(() => GetAutocomplete(sl()))
+    ..registerLazySingleton<LocationRepo>(() => LocationRepoImpl(sl()))
+    ..registerLazySingleton<LocationRemoteDataSource>(
+      () => LocationRemoteDataSourceImpl(client: sl()),
+    )
+    ..registerLazySingleton(
+      http.Client.new,
+    );
+}
+
 Future<void> _initRestaurants() async {
   sl
     ..registerFactory(
@@ -77,23 +101,15 @@ Future<void> _initRestaurants() async {
         fetchRestaurants: sl(),
       ),
     )
-    ..registerFactory(() => LocationBloc(geoLocation: sl()))
-    ..registerFactory(() => AutocompleteBloc(getAutocomplete: sl()))
     ..registerLazySingleton(() => CreateRestaurant(sl()))
     ..registerLazySingleton(() => FetchRestaurants(sl()))
-    ..registerLazySingleton(() => GetLocation(sl()))
-    ..registerLazySingleton(() => GetAutocomplete(sl()))
     ..registerLazySingleton<RestaurantRepo>(() => RestaurantRepoImpl(sl()))
-    ..registerLazySingleton<LocationRepo>(() => LocationRepoImpl(sl()))
     ..registerLazySingleton<RestRemoteDataSource>(
       () => RestRemoteDataSourceImpl(
         cloudStoreClient: sl(),
+        dbClient: sl(),
+        uuid: sl(),
       ),
     )
-    ..registerLazySingleton<LocationRemoteDataSource>(
-      () => LocationRemoteDataSourceImpl(client: sl()),
-    )
-    ..registerLazySingleton(
-      http.Client.new,
-    );
+    ..registerLazySingleton(Uuid.new);
 }

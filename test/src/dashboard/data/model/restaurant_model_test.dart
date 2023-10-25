@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/model/restaurant_model.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/models/restaurant_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/entities/restaurant.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

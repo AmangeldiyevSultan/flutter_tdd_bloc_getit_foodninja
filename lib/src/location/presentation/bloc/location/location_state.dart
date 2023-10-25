@@ -4,7 +4,7 @@ sealed class LocationState extends Equatable {
   const LocationState();
 
   @override
-  List<Object> get props => [];
+  List<dynamic> get props => [];
 }
 
 final class LocationInitial extends LocationState {
@@ -26,12 +26,12 @@ class LocationError extends LocationState {
 
 class LocationLoaded extends LocationState {
   const LocationLoaded({
+    required this.place,
     this.controller,
-    this.location,
   });
-  final Position? location;
+  final Place place;
   final GoogleMapController? controller;
 
   @override
-  List<Object> get props => [controller!, location!];
+  List<dynamic> get props => [place, controller];
 }
