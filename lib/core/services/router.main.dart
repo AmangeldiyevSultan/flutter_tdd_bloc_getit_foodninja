@@ -104,8 +104,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case SetLocationScreen.routeName:
       return _pageBuilder(
-        (_) => BlocProvider(
-          create: (_) => sl<AuthBloc>(),
+        (_) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => sl<AuthBloc>(),
+            ),
+            BlocProvider(
+              create: (_) => sl<DashboardBloc>(),
+            )
+          ],
           child: const SetLocationScreen(),
         ),
         settings: settings,

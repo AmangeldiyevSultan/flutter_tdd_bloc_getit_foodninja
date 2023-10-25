@@ -3,10 +3,10 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/entiti
 
 class LocationModel extends RestLocation {
   const LocationModel({
-    required super.city,
-    required super.country,
-    required super.latitude,
-    required super.longitude,
+    super.latitude,
+    super.longitude,
+    super.city,
+    super.country,
   });
 
   const LocationModel.empty()
@@ -19,10 +19,10 @@ class LocationModel extends RestLocation {
 
   LocationModel.fromMap(DataMap map)
       : this(
-          city: map['city'] as String,
-          country: map['country'] as String,
-          latitude: (map['latitude'] as num).toDouble(),
-          longitude: (map['longitude'] as num).toDouble(),
+          city: map['city'] as String?,
+          country: map['country'] as String?,
+          latitude: map['latitude'] as double?,
+          longitude: map['longitude'] as double?,
         );
 
   DataMap toMap() {

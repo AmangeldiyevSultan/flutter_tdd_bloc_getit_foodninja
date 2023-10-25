@@ -5,4 +5,5 @@ enum UpdateUserAction {
   lastName,
   phoneNumber,
   profilePic,
+  location,
 }

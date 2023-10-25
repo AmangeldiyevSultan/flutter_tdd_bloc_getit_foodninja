@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/exceptions.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/services/injection_container.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/models/restaurant_model.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/entities/location.dart';
@@ -27,13 +27,16 @@ class RestRemoteDataSourceImpl implements RestRemoteDataSource {
   const RestRemoteDataSourceImpl({
     required FirebaseFirestore cloudStoreClient,
     required FirebaseStorage dbClient,
+    required FirebaseAuth authClient,
     required Uuid uuid,
   })  : _cloudStoreClient = cloudStoreClient,
         _dbClient = dbClient,
+        _authClient = authClient,
         _uuid = uuid;
 
   final FirebaseFirestore _cloudStoreClient;
   final FirebaseStorage _dbClient;
+  final FirebaseAuth _authClient;
   final Uuid _uuid;
 
   @override
@@ -44,6 +47,12 @@ class RestRemoteDataSourceImpl implements RestRemoteDataSource {
     required RestLocation location,
   }) async {
     try {
+      if (_authClient.currentUser == null) {
+        throw const ServerException(
+          message: 'User do not authenicated!',
+          statusCode: 404,
+        );
+      }
       final ref = _dbClient.ref().child('restaurants/${_uuid.v4()}');
 
       await ref.putFile(image);
@@ -73,13 +82,20 @@ class RestRemoteDataSourceImpl implements RestRemoteDataSource {
   @override
   Future<List<RestaurantModel>> fetchRestaurants() async {
     try {
+      if (_authClient.currentUser == null) {
+        throw const ServerException(
+          message: 'User do not authenicated!',
+          statusCode: 404,
+        );
+      }
       final restaurantsList = <RestaurantModel>[];
       final restaurants =
           await _cloudStoreClient.collection('restaurants').get();
 
       for (final DocumentSnapshot restaurant in restaurants.docs) {
+        final restaurantData = restaurant.data();
         restaurantsList.add(
-          RestaurantModel.fromMap(restaurant as DataMap),
+          RestaurantModel.fromMap(restaurantData! as DataMap),
         );
       }
 

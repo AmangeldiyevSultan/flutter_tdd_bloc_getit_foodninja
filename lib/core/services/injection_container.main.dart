@@ -108,6 +108,7 @@ Future<void> _initRestaurants() async {
       () => RestRemoteDataSourceImpl(
         cloudStoreClient: sl(),
         dbClient: sl(),
+        authClient: sl(),
         uuid: sl(),
       ),
     )

@@ -1,27 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/loading_state.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/extension/context_extension.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/common/widgets/set_location.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/enum/update_user_action.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/exports/blocs.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/utils.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/views/sign_up_success_screen.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/presentation/widgets/body_template.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/models/location_model.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/presentation/views/set_location_map_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class SetLocationScreen extends StatelessWidget {
+class SetLocationScreen extends StatefulWidget {
   const SetLocationScreen({super.key});
   static const String routeName = '/set-location';
 
   @override
+  State<SetLocationScreen> createState() => _SetLocationScreenState();
+}
+
+class _SetLocationScreenState extends State<SetLocationScreen> {
+  DataMap? _position;
+
+  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {},
+    return BlocConsumer<DashboardBloc, DashboardState>(
+      listener: (context, state) {
+        if (state is DashBoardError) {
+          CoreUtils.showSnackBar(context, state.message);
+        }
+      },
       builder: (context, state) {
         return BodyTemplate(
           title: 'Set Your Location',
           subtitle: 'This data will be displayed in your account\n'
               'profile for security',
           onPressed: () {
+            LocationModel? locationInfo;
+            if (_position != null) {
+              final latLng = _position!['position'] as LatLng;
+              final country = _position!['country'] as String?;
+              final city = _position!['city'] as String?;
+              locationInfo = LocationModel(
+                country: country ?? '',
+                city: city ?? '',
+                latitude: latLng.latitude,
+                longitude: latLng.longitude,
+              );
+              context.read<AuthBloc>().add(
+                    UpdateUserEvent(
+                      userAction: UpdateUserAction.location,
+                      userData: locationInfo,
+                    ),
+                  );
+            }
+
             Navigator.restorablePushNamedAndRemoveUntil(
               context,
               SignUpSuccessScreen.routeName,
@@ -35,48 +69,19 @@ class SetLocationScreen extends StatelessWidget {
                 )
               : const Text('Next'),
           childs: [
-            Card(
-              elevation: 0.4,
-              shadowColor: Colours.shadowColour,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(22),
-              ),
-              child: SizedBox(
-                height: context.height * 0.19,
-                width: double.maxFinite,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/svg_img/logo-pin.svg',
-                            semanticsLabel: 'My SVG Image',
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          const Text('Your Location')
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding: EdgeInsets.zero,
-                          width: double.maxFinite,
-                          height: 57,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colours.setLocationBtnColour,
-                          ),
-                          child: const Center(child: Text('Set Location')),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+            SetLocation(
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
+                  SetLocationMapScreen.routeName,
+                ).then((value) {
+                  setState(() {
+                    _position = value as DataMap?;
+                  });
+                });
+              },
+              textWidet: Text(
+                _position == null ? 'Set Location' : 'Your Location Saved',
               ),
             ),
           ],

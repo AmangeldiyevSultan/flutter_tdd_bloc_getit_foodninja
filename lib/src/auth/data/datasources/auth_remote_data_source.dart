@@ -11,6 +11,7 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/enum/update_user_actio
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/errors/exceptions.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/data/model/user_model.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/models/location_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRemoteDataSource {
@@ -288,6 +289,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     try {
       switch (userAction) {
+        case UpdateUserAction.location:
+          if (userData != null) {
+            final locationData = userData as LocationModel;
+
+            await _updateUserData({'location': locationData.toMap()});
+          }
         case UpdateUserAction.phoneNumber:
           await _updateUserData({'phoneNumber': userData});
         case UpdateUserAction.email:

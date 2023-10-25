@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/domain/entities/place.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/domain/use_cases/get_current_location.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/domain/use_cases/get_place.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/domain/use_cases/get_place_by_latlng.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/location/domain/use_cases/get_current_location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 part 'location_event.dart';

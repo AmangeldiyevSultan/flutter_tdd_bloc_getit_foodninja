@@ -1,5 +1,6 @@
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/utils/typedef.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/auth/domain/entities/user.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/data/models/location_model.dart';
 
 class LocalUserModel extends LocalUser {
   const LocalUserModel({
@@ -11,6 +12,7 @@ class LocalUserModel extends LocalUser {
     super.lastName,
     super.phoneNumber,
     super.initialized,
+    super.location,
   });
 
   const LocalUserModel.empty()
@@ -22,22 +24,28 @@ class LocalUserModel extends LocalUser {
           firstName: '',
           lastName: '',
           phoneNumber: '',
+          location: null,
           initialized: false,
         );
 
-  LocalUserModel.fromMap(DataMap map)
-      : this(
-          uid: map['uid'] as String,
-          email: map['email'] as String,
-          status: map['status'] as String,
-          profilePic: map['profilePic'] as String,
-          firstName: map['firstName'] as String,
-          lastName: map['lastName'] as String,
-          phoneNumber: map['phoneNumber'] as String,
-          initialized: map['initialized'] as bool,
-          // integer: (map['integer'] as num).toInt(),
-          // list: (map['list'] as List<dynamic>).cast<String>(),
-        );
+  factory LocalUserModel.fromMap(DataMap map) {
+    LocationModel? location;
+    if (map['location'] != null) {
+      location = LocationModel.fromMap(map['location'] as DataMap);
+    }
+
+    return LocalUserModel(
+      uid: map['uid'] as String,
+      email: map['email'] as String,
+      status: map['status'] as String,
+      profilePic: map['profilePic'] as String?,
+      firstName: map['firstName'] as String?,
+      lastName: map['lastName'] as String?,
+      phoneNumber: map['phoneNumber'] as String?,
+      initialized: map['initialized'] as bool?,
+      location: location,
+    );
+  }
 
   DataMap toMap() {
     return {
@@ -49,6 +57,12 @@ class LocalUserModel extends LocalUser {
       'lastName': lastName,
       'phoneNumber': phoneNumber,
       'initialized': initialized,
+      'location': {
+        'city': location!.city,
+        'country': location!.country,
+        'latitude': location!.latitude,
+        'longitude': location!.longitude,
+      }
     };
   }
 
@@ -60,6 +74,7 @@ class LocalUserModel extends LocalUser {
     String? firstName,
     String? lastName,
     String? phoneNumber,
+    LocationModel? location,
     bool? initialized,
   }) {
     return LocalUserModel(
@@ -71,6 +86,7 @@ class LocalUserModel extends LocalUser {
       lastName: lastName ?? this.lastName,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       initialized: initialized ?? this.initialized,
+      location: location ?? this.location,
     );
   }
 }

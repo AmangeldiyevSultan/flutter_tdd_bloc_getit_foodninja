@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/domain/entities/location.dart';
 
 class LocalUser extends Equatable {
   const LocalUser({
@@ -10,6 +11,7 @@ class LocalUser extends Equatable {
     this.lastName,
     this.phoneNumber,
     this.initialized,
+    this.location,
   });
 
   const LocalUser.empty()
@@ -21,6 +23,7 @@ class LocalUser extends Equatable {
           firstName: '',
           lastName: '',
           phoneNumber: '',
+          location: null,
           initialized: false,
         );
 
@@ -32,6 +35,7 @@ class LocalUser extends Equatable {
   final String status;
   final String? phoneNumber;
   final bool? initialized;
+  final RestLocation? location;
 
   @override
   List<Object?> get props => [uid];

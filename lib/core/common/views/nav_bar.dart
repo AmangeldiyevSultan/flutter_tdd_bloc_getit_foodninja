@@ -7,8 +7,9 @@ import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/colours.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/fonts.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/res/media_res.dart';
 import 'package:flutter_foodninja_bloc_tdd_clean_arc/core/services/injection_container.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/create_restaurant_screen.dart';
-import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/presentation/views/dashboard_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/features/bloc/dashboard_bloc.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/features/presentation/admin_panel/views/create_restaurant_screen.dart';
+import 'package:flutter_foodninja_bloc_tdd_clean_arc/src/dashboard/features/presentation/dashboard/views/dashboard_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NavBar extends StatefulWidget {
@@ -38,7 +39,10 @@ class _NavBarState extends State<NavBar> {
   ];
 
   final List<Widget> _page = [
-    const DashBoardScreen(),
+    BlocProvider(
+      create: (_) => sl<DashboardBloc>()..add(const FetchRestaurantsEvent()),
+      child: const DashBoardScreen(),
+    ),
     const DashBoardScreen(),
     const DashBoardScreen(),
     const DashBoardScreen(),

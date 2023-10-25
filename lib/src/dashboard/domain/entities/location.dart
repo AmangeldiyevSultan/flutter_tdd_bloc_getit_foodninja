@@ -4,8 +4,8 @@ class RestLocation extends Equatable {
   const RestLocation({
     required this.latitude,
     required this.longitude,
-    required this.city,
-    required this.country,
+    this.city,
+    this.country,
   });
 
   const RestLocation.empty()
@@ -16,10 +16,10 @@ class RestLocation extends Equatable {
           longitude: 0,
         );
 
-  final double longitude;
-  final double latitude;
-  final String city;
-  final String country;
+  final double? longitude;
+  final double? latitude;
+  final String? city;
+  final String? country;
 
   @override
   List<Object?> get props => [latitude, longitude];
