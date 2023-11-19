@@ -38,7 +38,7 @@ class SetLocation extends StatelessWidget {
                   const SizedBox(
                     width: 15,
                   ),
-                  const Text('Your Location')
+                  const Text('Your Location'),
                 ],
               ),
               GestureDetector(

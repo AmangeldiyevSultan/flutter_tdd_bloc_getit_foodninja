@@ -62,7 +62,7 @@ class LocalUserModel extends LocalUser {
         'country': location!.country,
         'latitude': location!.latitude,
         'longitude': location!.longitude,
-      }
+      },
     };
   }
 

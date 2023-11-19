@@ -74,7 +74,7 @@ class RestraurantListWidget extends StatelessWidget {
                   fontFamily: Fonts.viga,
                   fontWeight: FontWeight.w100,
                 ),
-              )
+              ),
             ],
           ),
         );

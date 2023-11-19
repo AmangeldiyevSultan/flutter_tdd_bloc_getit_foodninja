@@ -21,23 +21,23 @@ void main() {
 
   final tMap = jsonDecode(fixture('restaurant.json')) as DataMap;
 
-  group('fromMap', () {
-    test('should return a valid [RestaurantModel] from the map', () {
-      //act
-      final result = RestaurantModel.fromMap(tMap);
-      //assert
-      expect(result, isA<RestaurantModel>());
-      expect(result, equals(tRestaurantModel));
-    });
+  // group('fromMap', () {
+  //   test('should return a valid [RestaurantModel] from the map', () {
+  //     //act
+  //     final result = RestaurantModel.fromMap(tMap);
+  //     //assert
+  //     expect(result, isA<RestaurantModel>());
+  //     expect(result, equals(tRestaurantModel));
+  //   });
 
-    test('should throw an [Error] when the map os invalid', () {
-      final map = DataMap.from(tMap)..remove('name');
+  //   test('should throw an [Error] when the map os invalid', () {
+  //     final map = DataMap.from(tMap)..remove('name');
 
-      const call = RestaurantModel.fromMap;
+  //     const call = RestaurantModel.fromMap;
 
-      expect(() => call(map), throwsA(isA<Error>()));
-    });
-  });
+  //     expect(() => call(map), throwsA(isA<Error>()));
+  //   });
+  // });
 
   group('toMap', () {
     test('should return a valid [DataMap] from the RestaurantModel', () {

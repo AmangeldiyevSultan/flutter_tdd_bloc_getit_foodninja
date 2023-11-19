@@ -78,7 +78,7 @@ class BodyTemplate extends StatelessWidget {
                       onPressed: onPressed,
                       child: buttonChild,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

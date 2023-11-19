@@ -42,7 +42,7 @@ class ChooseFromGallery extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Text('From Gallery')
+              Text('From Gallery'),
             ],
           ),
         ),

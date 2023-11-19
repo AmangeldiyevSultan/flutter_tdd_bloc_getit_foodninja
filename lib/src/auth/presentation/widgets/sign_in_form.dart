@@ -36,7 +36,7 @@ class SignInForm extends StatelessWidget {
             hintText: 'Password',
             validator: (value) =>
                 value!.length < 6 ? 'Should be more than 6 characters' : null,
-          )
+          ),
         ],
       ),
     );

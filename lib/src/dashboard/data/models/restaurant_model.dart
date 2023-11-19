@@ -36,7 +36,7 @@ class RestaurantModel extends Restaurant {
         'country': location.country,
         'latitude': location.latitude,
         'longitude': location.longitude,
-      }
+      },
     };
   }
 

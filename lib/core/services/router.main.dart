@@ -111,7 +111,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
             ),
             BlocProvider(
               create: (_) => sl<DashboardBloc>(),
-            )
+            ),
           ],
           child: const SetLocationScreen(),
         ),

@@ -104,7 +104,7 @@ class _SignUpFormState extends State<SignUpForm> {
             validator: (value) => value != widget.passwordController.text
                 ? 'Passwords do not match'
                 : null,
-          )
+          ),
         ],
       ),
     );

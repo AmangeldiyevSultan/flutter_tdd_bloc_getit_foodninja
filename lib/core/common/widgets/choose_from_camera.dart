@@ -35,7 +35,7 @@ class ChooseFromCamera extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Text('From Camera')
+              Text('From Camera'),
             ],
           ),
         ),

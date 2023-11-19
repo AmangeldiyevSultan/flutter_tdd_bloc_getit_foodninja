@@ -70,7 +70,7 @@ class BioForm extends StatelessWidget {
                 : value.isValidPhoneNumber()
                     ? null
                     : 'Please enter valid mobile number',
-          )
+          ),
         ],
       ),
     );

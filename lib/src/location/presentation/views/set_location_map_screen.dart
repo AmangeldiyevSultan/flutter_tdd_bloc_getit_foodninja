@@ -254,7 +254,7 @@ class _SetLocationMapScreenState extends State<SetLocationMapScreen> {
                           );
                         },
                         child: const Text('Go Back!'),
-                      )
+                      ),
                     ],
                   ),
                 ),

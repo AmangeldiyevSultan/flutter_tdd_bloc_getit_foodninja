@@ -56,7 +56,12 @@ class CoreUtils {
         image = File(pickedImage.path);
       }
     } catch (e) {
-      showSnackBar(context, e.toString());
+      if (context.mounted) {
+        showSnackBar(
+          context,
+          e.toString(),
+        );
+      }
     }
     return image;
   }

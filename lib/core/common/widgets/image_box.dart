@@ -28,7 +28,7 @@ class ImageBox extends StatelessWidget {
                   blurRadius: 15,
                   spreadRadius: 6,
                   offset: Offset(7, 15),
-                )
+                ),
               ],
               borderRadius: BorderRadius.circular(22),
               image: DecorationImage(

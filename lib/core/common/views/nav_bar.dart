@@ -198,7 +198,7 @@ class _NavBarState extends State<NavBar> {
                   fontFamily: Fonts.inter,
                 ),
               ),
-            ]
+            ],
           ],
         ),
       ),
