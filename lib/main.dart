@@ -10,10 +10,11 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await init();
   FlutterNativeSplash.remove();
   runApp(const MyApp());
