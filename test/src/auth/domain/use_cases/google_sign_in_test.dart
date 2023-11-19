@@ -15,18 +15,17 @@ void main() {
     usecase = GoogleSignInMethod(repo);
   });
 
-  // const tUser = LocalUser.empty();
-  const tUserError = LocalUser(uid: 'uid', email: 'email', status: 'status');
+  const tUser = LocalUser.empty();
 
   test('should call the [AuthRepo.googleSignInMethod]', () async {
     // Arrange
     when(
       () => repo.googleSignIn(),
-    ).thenAnswer((_) async => const Right(LocalUser.empty()));
+    ).thenAnswer((_) async => const Right(tUser));
 
     // Act
     final result = await usecase();
 
-    expect(result, equals(const Right<dynamic, LocalUser>(tUserError)));
+    expect(result, equals(const Right<dynamic, LocalUser>(tUser)));
   });
 }
